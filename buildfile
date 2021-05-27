@@ -1,3 +1,3 @@
-import pkgs = {catch2/}
+import pkgs = {catch2*/}
 
 ./: $pkgs

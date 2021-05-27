@@ -3,7 +3,7 @@
 pub = [dir_path] ../include/catch2/
 include $pub
 ./: lib{catch2}: $pub/hxx{**} $pub/h{**}
-liba{catch2}: cxx{catch_with_main}
+liba{catch2}: cxx{catch_with_main} $pub/cxx{**}
 
 # Build options.
 out_pfx_inc = [dir_path] $out_root/include/

@@ -1,0 +1,7 @@
+project = catch2-tests
+
+using config
+using version
+using dist
+using install
+using test

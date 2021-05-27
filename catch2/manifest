@@ -6,5 +6,6 @@ license: BSL-1.0
 description-file: ../UPSTREAM/README.md
 url: https://github.com/catchorg/Catch2
 email: swat.somebug@gmail.com
+tests: catch2-tests == $
 depends: * build2 >= 0.13.0
 depends: * bpkg >= 0.13.0

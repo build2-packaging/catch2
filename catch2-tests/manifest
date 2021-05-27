@@ -1,0 +1,10 @@
+: 1
+name: catch2-tests
+version: 0.1.0-a.0.z
+summary: Catch2 test package
+license: BSL-1.0
+description-file: ../UPSTREAM/README.md
+url: https://github.com/catchorg/Catch2
+email: swat.somebug@gmail.com
+depends: * build2 >= 0.13.0
+depends: * bpkg >= 0.13.0
