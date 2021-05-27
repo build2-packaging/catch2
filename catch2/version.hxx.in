@@ -1,0 +1,34 @@
+#pragma once
+
+// The numeric version format is AAAAABBBBBCCCCCDDDE where:
+//
+// AAAAA - major version number
+// BBBBB - minor version number
+// CCCCC - bugfix version number
+// DDD   - alpha / beta (DDD + 500) version number
+// E     - final (0) / snapshot (1)
+//
+// When DDDE is not 0, 1 is subtracted from AAAAABBBBBCCCCC. For example:
+//
+// Version      AAAAABBBBBCCCCCDDDE
+//
+// 0.1.0        0000000001000000000
+// 0.1.2        0000000001000020000
+// 1.2.3        0000100002000030000
+// 2.2.0-a.1    0000200001999990010
+// 3.0.0-b.2    0000299999999995020
+// 2.2.0-a.1.z  0000200001999990011
+//
+#define CATCH2_VERSION       $catch2.version.project_number$ULL
+#define CATCH2_VERSION_STR   "$catch2.version.project$"
+#define CATCH2_VERSION_ID    "$catch2.version.project_id$"
+#define CATCH2_VERSION_FULL  "$catch2.version$"
+
+#define CATCH2_VERSION_MAJOR $catch2.version.major$
+#define CATCH2_VERSION_MINOR $catch2.version.minor$
+#define CATCH2_VERSION_PATCH $catch2.version.patch$
+
+#define CATCH2_PRE_RELEASE   $catch2.version.pre_release$
+
+#define CATCH2_SNAPSHOT_SN   $catch2.version.snapshot_sn$ULL
+#define CATCH2_SNAPSHOT_ID   "$catch2.version.snapshot_id$"
