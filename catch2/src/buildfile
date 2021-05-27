@@ -1,0 +1,18 @@
+# Public headers.
+#
+pub = [dir_path] ../include/catch2/
+include $pub
+./: lib{catch2}: $pub/hxx{**} $pub/h{**}
+liba{catch2}: cxx{catch_with_main}
+
+# Build options.
+out_pfx_inc = [dir_path] $out_root/include/
+src_pfx_inc = [dir_path] $src_root/include/
+out_pfx_src = [dir_path] $out_root/src/
+src_pfx_src = [dir_path] $src_root/src/
+
+cxx.poptions =+ "-I$out_pfx_src" "-I$src_pfx_src" \
+              "-I$out_pfx_inc" "-I$src_pfx_inc"
+lib{catch2}: cxx.export.poptions += "-I$out_pfx_inc" "-I$src_pfx_inc"
+liba{catch2}: cxx.export.poptions += -DCATCH2_BUILD_STATIC
+libs{catch2}: cxx.export.poptions += -DCATCH2_BUILD_SHARED

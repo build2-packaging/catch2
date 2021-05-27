@@ -1,6 +1,0 @@
-$out_root/
-{
-  include catch2/
-}
-
-export $out_root/catch2/$import.target
