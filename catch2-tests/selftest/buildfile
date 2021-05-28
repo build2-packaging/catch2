@@ -1,17 +1,5 @@
-import intf_libs = catch2%liba{catch2}
+import intf_libs = catch2%lib{catch2}
 
-# Upstream tests are written assuming include paths without catch2 directory prefix
-# Need to add prefix manually
-# Not the most elegant way to do it but it banks on prior knowledge of what options are exported
-for exported_option : $($intf_libs: cxx.export.poptions)
-{
-  if ($exported_option != -DCATCH2_BUILD_STATIC)
-  {   
-    cxx.poptions += "$exported_option/catch2"
-  }
-}
-
-./: exe{selftest}: cxx{TestMain} \
-                   IntrospectiveTests/cxx{*} SurrogateCpps/cxx{*} \
-                   TimingTests/cxx{*} UsageTests/cxx{*} \
-                   $intf_libs
+incdir = [dir_path] $src_base/include/
+./: exe{selftest}: {hxx cxx h}{**} $intf_libs
+cxx.poptions =+ "-I$incdir"
