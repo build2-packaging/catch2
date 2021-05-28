@@ -1,0 +1,9 @@
+pub_hdrs = hxx{**}
+
+./: $pub_hdrs
+
+h{**}:
+{
+  install         = include
+  install.subdirs = true
+}

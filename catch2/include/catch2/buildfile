@@ -1,9 +1,0 @@
-pub_hdrs = hxx{**} h{**}
-
-./: $pub_hdrs
-
-h{**}:
-{
-  install         = include/catch2/
-  install.subdirs = true
-}
