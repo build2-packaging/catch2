@@ -1,5 +1,5 @@
 import intf_libs = catch2%lib{catch2}
 
 incdir = [dir_path] $src_base/include/
-./: exe{selftest}: {hxx cxx h}{**} $intf_libs
+./: exe{selftest}: {hxx cxx h}{**} $intf_libs testscript
 cxx.poptions =+ "-I$incdir"

@@ -1,0 +1,118 @@
+: RunTests
+$* >>~%EOM%
+%(
+%((?!Filters\:).)*%
+%)+
+EOM
+
+
+: ListTests
+: Return value is not zero here but number of test - which can change a lot
+$* --list-tests --verbosity high >>~%EOM% != 0
+%(
+%((?!Hidden Test).)*%
+%)+?
+%(
+%.*?[0-9]+? test cases%
+%.*%
+%)
+EOM
+
+# For some reason this always fails!?
+# : ListTags
+# $* --list-tags >>~%EOM% != 0
+# : Return value is not zero here but number of tags
+# %(
+# %.*%
+# %)+
+# EOM
+
+: ListReporters
+: Return value is not zero here but number of reporters
+$* --list-reporters >>~%EOM% != 0
+Available reporters:
+%(
+%.*%
+%)+
+EOM
+
+: ListTestNamesOnly
+: Return value is not zero here but number of tests
+$* --list-test-names-only >>~%EOM% !=0
+%(
+%((?!Hidden Test).)*%
+%)+?
+%Regex string matcher.*%
+%(
+%((?!Hidden Test).)*%
+%)+
+EOM
+
+: NoAssertions
+$* -w NoAssertions >>~%EOM% != 0
+%(
+%.*%
+%)+?
+%(No assertions in test case).*%
+%(
+%.*%
+%)+?
+EOM
+
+: NoTest
+$* Tracker, "___nonexistent_test___" >>~%EOM%
+%(
+%.*(?!No tests run).*%
+%)+?
+%No test cases matched '___nonexistent_test___'.*%
+%(
+%.*(?!No tests run).*%
+%)+?
+EOM
+
+: UnmatchedOutputFilter
+$* [this-tag-does-not-exist] -w NoTests >>~%EOM% != 0
+%(
+%.*%
+%)*?
+No test cases matched '[this-tag-does-not-exist]'
+%(
+%.*%
+%)*?
+EOM
+
+: FilteredSection_1
+$* \#1394 -c RunSection >>~%EOM%
+%(
+%((?!No tests ran).)*%
+%)*?
+EOM
+
+: FilteredSection_2
+$* \#1394\ nested -c NestedRunSection >>~%EOM%
+%(
+%((?!No tests ran).)*%
+%)*?
+EOM
+
+: FilteredSection_GeneratorsDontCauseInfiniteLoop_1
+$* "#2025: original repro" -c "fov_0" >>~%EOM%
+%(
+%((?!inside with fov: 1).)*%
+%)*?
+inside with fov: 0
+%(
+%.*%
+%)*?
+EOM
+
+: FilteredSection_GeneratorsDontCauseInfiniteLoop_2
+$* "#2025: same-level sections" -c "A" -c "B" >>~%EOM%
+%(
+%.*%
+%)*?
+All tests passed (4 assertions in 1 test case)
+%(
+%.*%
+%)*?
+EOM
