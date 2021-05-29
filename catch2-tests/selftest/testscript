@@ -202,3 +202,40 @@ $* -f $src_base/Misc/invalid-test-names.input >>~%EOM%
 No tests ran
 
 EOM
+
+: MinDuration_SimpleThreshold
+$* --min-duration 0.22 [min_duration_test] >>~%EOM%
+%(
+%((?!sleep_for_100ms).*)%
+%)+?
+%.*?s: sleep_for_250ms%
+%(
+%.*%
+%)+?
+EOM
+
+: MinDuration_DurationOverrideYes
+: -d yes overrides the threshold
+:
+: We should see the faster test even
+: with a ridiculous high min duration threshold
+$* --min-duration 1.0 -d yes [min_duration_test] >>~%EOM%
+%(
+%.*%
+%)+?
+%.*?s: sleep_for_100ms%
+%(
+%.*%
+%)+?
+EOM
+
+: MinDuration_DurationOverrideNo
+: -d no overrides the threshold
+:
+: We should never see any tests even
+: with ridiculously low min duration threshold
+$* --min-duration 0.0001 -d no [min_duration_test] >>~%EOM%
+%(
+%((?!sleep_for_250ms).*)%
+%)+?
+EOM
