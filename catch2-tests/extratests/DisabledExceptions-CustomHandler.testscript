@@ -1,1 +1,22 @@
-/mnt/Data/CPPworkspace/linux/catch2-gcc/catch2-tests/extratests/DisabledExceptions-CustomHandler.testscript
+: CATCH_CONFIG_DISABLE_EXCEPTIONS-3
+$* "Tests that run" >>~%EOM% != 0
+%(
+%((?!====== CUSTOM HANDLER ======).)*%
+%)+?
+assertions: 4 | 2 passed | 2 failed
+%(
+%.*%
+%)+?
+EOM
+
+: CATCH_CONFIG_DISABLE_EXCEPTIONS-4
+$* "Tests that abort" 1>- 2>>~%EOM% != 0
+%(
+%.*%
+%)*?
+%====== CUSTOM HANDLER ======.*%
+%(
+%.*%
+%)*?
+EOM
+

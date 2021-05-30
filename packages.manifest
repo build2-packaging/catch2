@@ -2,3 +2,5 @@
 location: catch2/
 :
 location: catch2-tests/
+:
+location: catch2-examples/

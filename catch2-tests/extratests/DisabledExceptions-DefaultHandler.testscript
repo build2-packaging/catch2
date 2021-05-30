@@ -1,1 +1,21 @@
-/mnt/Data/CPPworkspace/linux/catch2-gcc/catch2-tests/extratests/DisabledExceptions-DefaultHandler.testscript
+: CATCH_CONFIG_DISABLE_EXCEPTIONS-1
+$* "Tests that run" >>~%EOM% != 0
+%(
+%((?!abort;terminate;fatal).)*%
+%)+?
+assertions: 4 | 2 passed | 2 failed
+%(
+%((?!abort;terminate;fatal).)*%
+%)*?
+EOM
+
+: CATCH_CONFIG_DISABLE_EXCEPTIONS-2
+$* "Tests that abort" 1>- 2>>~%EOM% != 0
+%(
+%.*%
+%)*?
+%Catch will terminate.*%
+%(
+%.*%
+%)*?
+EOM

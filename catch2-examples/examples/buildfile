@@ -1,0 +1,40 @@
+import catch2_lib   = catch2%lib{catch2}
+
+single_file_srcs    = 010-TestCase \
+                      231-Cfg-OutputStreams
+
+srcs_020            = 020-TestCase-1 \
+                      020-TestCase-2
+                      
+src_idomatic_main   = 000-CatchMain
+
+src_idomatic_tests  = 030-Asn-Require-Check \
+                      100-Fix-Section \
+                      110-Fix-ClassFixture \
+                      120-Bdd-ScenarioGivenWhenThen \
+                      210-Evt-EventListeners \
+                      300-Gen-OwnGenerator \
+                      301-Gen-MapTypeConversion \
+                      302-Gen-Table \
+                      310-Gen-VariablesInGenerators \
+                      311-Gen-CustomCapture
+
+srcs_reporters_main = 200-Rpt-CatchMain \
+                      207-Rpt-TeamCityReporter
+
+libue{catchmain}         : cxx{$src_idomatic_main} $catch2_lib
+libue{catchmaincityteam} : cxx{200-Rpt-CatchMain} hxx{**} $catch2_lib                    
+obj{200-Rpt-CatchMain}   : cxx.poptions += -DCATCH_EXAMPLE_RPT_1=\"include/reporters/catch_reporter_teamcity.hpp\"
+
+for src : $single_file_srcs
+{
+  ./: exe{$src}: cxx{$src} $catch2_lib  
+}
+
+for src : $src_idomatic_tests
+{
+  ./: exe{$src}: cxx{$src} libue{catchmain} $catch2_lib  
+}
+
+./: exe{020-TestCase}: cxx{$srcs_020} $catch2_lib
+./: exe{207-Rpt-TeamCityReporter}: cxx{207-Rpt-TeamCityReporter} libue{catchmaincityteam} $catch2_lib

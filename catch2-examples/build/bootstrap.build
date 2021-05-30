@@ -1,0 +1,7 @@
+project = catch2-examples
+
+using config
+using version
+using install
+using dist
+using test

@@ -1,7 +1,7 @@
 : 1
-name: catch2-tests
+name: catch2-examples
 version: 2.13.6-a.0.z
-summary: Catch2 test package
+summary: Catch2 Examples
 license: BSL-1.0
 description-file: ../UPSTREAM.README.md
 url: https://github.com/catchorg/Catch2
