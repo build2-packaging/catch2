@@ -1,0 +1,10 @@
+# All executables
+PrefixedMacros
+DisabledMacros
+DisabledExceptions-DefaultHandler
+DisabledExceptions-CustomHandler
+FallbackStringifier
+DisableStringification
+BenchmarkingMacros
+WindowsHeader
+DebugBreakMacros

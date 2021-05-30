@@ -1,0 +1,8 @@
+: FallbackStringifier
+$* -r compact -s >>~%EOM%
+%.*?foo\{\} for: \{ \!\!\! \}%
+%(
+%.*%
+%)*
+EOM
+

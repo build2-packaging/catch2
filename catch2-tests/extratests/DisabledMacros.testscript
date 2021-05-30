@@ -1,0 +1,21 @@
+: CATCH_CONFIG_DISABLE-1
+$* -s >>~%EOM%
+%(
+%(?!This should not happen).*%
+%)*?
+%No tests ran%
+%(
+%(?!This should not happen).*%
+%)*?
+EOM
+
+: CATCH_CONFIG_DISABLE-2
+$* --list-tests >>~%EOM%
+%(
+%.*%
+%)*?
+%0 test cases%
+%(
+%.*%
+%)*?
+EOM

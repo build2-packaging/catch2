@@ -1,0 +1,10 @@
+: BenchmarkingMacros
+$* -r console -s >>~%EOM%
+%(
+%.*%
+%)+?
+%benchmark name[\t ]+samples[\t ]+iterations[\t ]+estimated%
+%(
+%.*%
+%)*?
+EOM

@@ -1,0 +1,10 @@
+: CATCH_CONFIG_DISABLE_STRINGIFICATION
+$* -r compact -s >>~%EOM%
+%(
+%((?!Hidden\{\} == Hidden\{\}).)*%
+%)*?
+%.*?Disabled by CATCH_CONFIG_DISABLE_STRINGIFICATION.*%
+%(
+%((?!Hidden\{\} == Hidden\{\}).)*%
+%)*?
+EOM

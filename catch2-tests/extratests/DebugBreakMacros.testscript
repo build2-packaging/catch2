@@ -1,0 +1,7 @@
+: DebugBreakMacros
+$* --break 1>- 2>>~%EOM% != 0
+Pretty please, break into debugger
+%(
+%.*%
+%)*?
+EOM
