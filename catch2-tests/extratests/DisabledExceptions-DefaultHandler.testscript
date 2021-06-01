@@ -9,13 +9,18 @@ assertions: 4 | 2 passed | 2 failed
 %)*?
 EOM
 
-: CATCH_CONFIG_DISABLE_EXCEPTIONS-2
-$* "Tests that abort" 1>- 2>>~%EOM% != 0
-%(
-%.*%
-%)*?
-%Catch will terminate.*%
-%(
-%.*%
-%)*?
-EOM
+# TODO: b version 0.13.0 exists and aborts
+# Actually not a failure. stderr has the right string
+if ($cxx.id != 'msvc')
+{
+  : CATCH_CONFIG_DISABLE_EXCEPTIONS-2
+  $* "Tests that abort" 1>- 2>>~%EOM% != 0
+  %(
+  %.*%
+  %)*?
+  %Catch will terminate.*%
+  %(
+  %.*%
+  %)*?
+  EOM
+}

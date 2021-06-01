@@ -9,17 +9,9 @@ obj{X02-DisabledMacros}: cxx.poptions += -DCATCH_CONFIG_DISABLE
 ./: exe{DisabledExceptions-DefaultHandler}: cxx{X03-DisabledExceptions-DefaultHandler} $catch2_lib testscript{DisabledExceptions-DefaultHandler}
 ./: exe{DisabledExceptions-CustomHandler} : cxx{X04-DisabledExceptions-CustomHandler} $catch2_lib  testscript{DisabledExceptions-CustomHandler}
 if ($cxx.id == 'msvc')
-{
-  obj{X??-DisabledExceptions*}:
-  {
-    cxx.coptions += \/EHs-c
-    cxx.coptions += \/D_HAS_EXCEPTIONS=0
-  }
-}
+  obj{X??-DisabledExceptions*}:cxx.coptions += \/EHs-c- \/D_HAS_EXCEPTIONS=0 \/GR-
 else
-{
   obj{X??-DisabledExceptions*}: cxx.coptions += -fno-exceptions
-}
 
 ./: exe{FallbackStringifier}: cxx{X10-FallbackStringifier} $catch2_lib  testscript{FallbackStringifier}
 obj{X10-FallbackStringifier}: cxx.poptions += -DCATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier
@@ -31,9 +23,13 @@ obj{X11-DisableStringification}: cxx.poptions += -DCATCH_CONFIG_DISABLE_STRINGIF
 obj{X20-BenchmarkingMacros}: cxx.poptions += -DCATCH_CONFIG_ENABLE_BENCHMARKING
 
 # MSVC specific test exe. Need to ensure file is always included in distribution
-exe{WindowsHeader}: cxx{X90-WindowsHeaderInclusion}: include = ($cxx.id == 'msvc')
+exe{WindowsHeader}: $catch2_lib cxx{X90-WindowsHeaderInclusion}: include = ($cxx.id == 'msvc')
 if($cxx.id == 'msvc')
+{ 
   exe{WindowsHeader}: test.arguments = -r console
+  exe{WindowsHeader}: test = true
+}
+
 ./: exe{WindowsHeader}: include = ($cxx.id == 'msvc')
 
 ./: exe{DebugBreakMacros}: cxx{X12-CustomDebugBreakMacro} $catch2_lib testscript{DebugBreakMacros}
