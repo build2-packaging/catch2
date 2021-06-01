@@ -3,3 +3,8 @@ import intf_libs = catch2%lib{catch2}
 incdir = [dir_path] $src_base/include/
 ./: exe{selftest}: {hxx cxx h}{**} $intf_libs testscript Misc/file{*.input}
 cxx.poptions =+ "-I$incdir"
+
+# Need to ensure MSVC uses all strings as utf-8
+# Required for "Broken String test"
+if ($cxx.id == 'msvc')
+  cxx.coptions += \/utf-8
