@@ -5,18 +5,22 @@ $* >>~%EOM%
 %)+
 EOM
 
-
-: ListTests
-: Return value is not zero here but number of test - which can change a lot
-$* --list-tests --verbosity high >>~%EOM% != 0
-%(
-%((?!Hidden Test).)*%
-%)+?
-%(
-%.*?[0-9]+? test cases%
-%.*%
-%)
-EOM
+# TODO: Enable this at some point
+# Debugging shows a problem with std::regex_match implementation on msvc
+if ($cxx.target.class != 'windows')
+{  
+  : ListTests
+  : Return value is not zero here but number of test - which can change a lot
+  $* --list-tests --verbosity high >>~%EOM% != 0
+  %(
+  %((?!Hidden Test).)*%
+  %)+?
+  %(
+  %.*?[0-9]+? test cases%
+  %.*%
+  %)
+  EOM
+}
 
 # For some reason this always fails!?
 # : ListTags
