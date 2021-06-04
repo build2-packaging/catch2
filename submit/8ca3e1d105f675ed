@@ -1,0 +1,5 @@
+: 1
+name: catch2-tests
+version: 2.13.6
+summary: Catch2 test package
+license: BSL-1.0
