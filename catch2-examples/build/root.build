@@ -1,4 +1,4 @@
-cxx.std = 11
+cxx.std = 14
 
 using cxx
 
