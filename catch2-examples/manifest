@@ -3,7 +3,7 @@ name: catch2-examples
 version: 2.13.6-a.0.z
 summary: Catch2 Examples
 license: BSL-1.0
-description-file: ../UPSTREAM.README.md
+description-file: README.md
 url: https://github.com/catchorg/Catch2
 email: swat.somebug@gmail.com
 depends: * build2 >= 0.13.0
