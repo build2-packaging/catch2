@@ -1,6 +1,7 @@
 : 1
 name: catch2-examples
-version: 2.13.6+1
+version: 2.13.6+2
+project: catch2
 summary: Catch2 Examples
 license: BSL-1.0
 description-file: README.md

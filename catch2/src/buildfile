@@ -2,7 +2,7 @@
 #
 pub = [dir_path] ../include
 include $pub
-lib{catch2}: $pub/hxx{**} $pub/h{**}
+lib{catch2}: $pub/{$($pub/ pub_hdrs)}
 liba{catch2wmain}: cxx{catch_with_main} lib{catch2}
 
 # Build options.
