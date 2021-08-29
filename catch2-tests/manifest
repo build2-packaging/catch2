@@ -1,6 +1,6 @@
 : 1
 name: catch2-tests
-version: 2.13.6+2
+version: 2.13.7-a.0.z
 project: catch2
 summary: Catch2 test package
 license: BSL-1.0
