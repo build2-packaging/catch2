@@ -1,0 +1,7 @@
+: 1
+name: catch2
+version: 2.13.8
+summary: Catch2 is a multi-paradigm test framework for C++. which also\
+ supports Objective-C (and maybe C). It is primarily distributed as a single\
+ header file, although certain extensions may require additional headers.
+license: BSL-1.0
