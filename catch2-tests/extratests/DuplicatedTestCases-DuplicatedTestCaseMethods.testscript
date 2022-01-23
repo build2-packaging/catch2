@@ -1,0 +1,7 @@
+: DuplicatedTestCases-DuplicatedTestCaseMethods
+$* -r compact 1>- 2>>~%EOM% != 0
+%error.*already defined.*%
+%(
+%.*%
+%)+?
+EOM

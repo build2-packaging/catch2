@@ -1,0 +1,8 @@
+: DuplicatedTestCases-SameNameAndTags
+$* >>~%EOM%
+%(
+%.*%
+%)+
+All tests passed (14 assertions in 3 test cases)
+
+EOM

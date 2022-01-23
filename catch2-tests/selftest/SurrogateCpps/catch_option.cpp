@@ -1,1 +1,0 @@
-../../../upstream/projects/SelfTest/SurrogateCpps/catch_option.cpp

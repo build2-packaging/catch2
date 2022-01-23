@@ -1,1 +1,0 @@
-../../../upstream/projects/SelfTest/IntrospectiveTests/StringManip.tests.cpp

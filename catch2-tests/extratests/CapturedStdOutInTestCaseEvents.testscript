@@ -1,0 +1,4 @@
+: CapturedStdOutInEvents
+$* --reporter test-reporter >>EOM
+X27 - TestReporter constructed
+EOM

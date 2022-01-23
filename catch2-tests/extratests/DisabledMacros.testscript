@@ -1,5 +1,5 @@
 : CATCH_CONFIG_DISABLE-1
-$* -s >>~%EOM%
+$* -s >>~%EOM% != 0
 %(
 %(?!This should not happen).*%
 %)*?

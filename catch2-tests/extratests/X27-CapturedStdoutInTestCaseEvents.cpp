@@ -1,0 +1,1 @@
+../../upstream/tests/ExtraTests/X27-CapturedStdoutInTestCaseEvents.cpp

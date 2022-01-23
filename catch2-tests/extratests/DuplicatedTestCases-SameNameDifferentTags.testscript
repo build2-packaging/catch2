@@ -1,0 +1,6 @@
+: DuplicatedTestCases-SameNameDifferentTags
+$* -r compact >>~%EOM%
+%(
+%((?!error).*)%
+%)+?
+EOM

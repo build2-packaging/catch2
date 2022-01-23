@@ -1,0 +1,19 @@
+: Reporters
+{
+  : Registration-is-case-preserving
+  $*  --list-reporters >>~%EOM%
+  %(
+  %.*%
+  %)+
+  %.*testReporterCASED.*%
+  %(
+  %.*%
+  %)+
+  EOM
+
+  : Selection-is-case-insensitive
+  $* -r testReportercased >>EOM != 0
+  TestReporter constructed
+  EOM
+}
+

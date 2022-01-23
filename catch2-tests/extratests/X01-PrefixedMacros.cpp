@@ -1,1 +1,1 @@
-../../upstream/projects/ExtraTests/X01-PrefixedMacros.cpp
+../../upstream/tests/ExtraTests/X01-PrefixedMacros.cpp

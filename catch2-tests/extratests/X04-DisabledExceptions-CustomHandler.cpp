@@ -1,1 +1,1 @@
-../../upstream/projects/ExtraTests/X04-DisabledExceptions-CustomHandler.cpp
+../../upstream/tests/ExtraTests/X04-DisabledExceptions-CustomHandler.cpp

@@ -1,19 +1,23 @@
-# Public headers.
-#
-pub = [dir_path] ../include
-include $pub
-lib{catch2}: $pub/{$($pub/ pub_hdrs)}
-liba{catch2wmain}: cxx{catch_with_main} lib{catch2}
+
+# Upstream currently doesn't support shared libs
+liba{catch2}: {hxx cxx}{** -catch2/internal/catch_main}
+liba{catch2wmain}: catch2/internal/cxx{catch_main} liba{catch2}
+
 
 # Build options.
 out_pfx_inc = [dir_path] $out_root/include/
-src_pfx_inc = [dir_path] $src_root/include/
-out_pfx_src = [dir_path] $out_root/src/
 src_pfx_src = [dir_path] $src_root/src/
 
-cxx.poptions =+ "-I$out_pfx_src" "-I$src_pfx_src" \
-              "-I$out_pfx_inc" "-I$src_pfx_inc"
-cxx.export.poptions += "-I$out_pfx_inc" "-I$src_pfx_inc"
-liba{catch2wmain}: cxx.export.poptions += -DCATCH2_BUILD_STATIC_WITH_MAIN
+cxx.poptions =+ "-I$src_base"
 
-./: lib{catch2} liba{catch2wmain}
+cxx.export.poptions += "-I$out_pfx_inc" "-I$src_pfx_src"
+liba{catch2wmain}: cxx.export.poptions += -DCATCH2_BUILD_STATIC_WITH_MAIN
+liba{catch2wmain}: bin.whole = true
+
+./: liba{catch2} liba{catch2wmain}
+
+hxx{*}:
+{
+  install = include/
+  install.subdirs = true
+}

@@ -1,1 +1,0 @@
-../../../upstream/projects/SelfTest/IntrospectiveTests/InternalBenchmark.tests.cpp

@@ -1,1 +1,1 @@
-../../upstream/projects/ExtraTests/X10-FallbackStringifier.cpp
+../../upstream/tests/ExtraTests/X10-FallbackStringifier.cpp

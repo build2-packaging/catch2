@@ -1,0 +1,8 @@
+: TestSpecs
+{
+  : NoTests
+  $* >- 2>&1 != 0
+
+  : OverrideFailureWithEmptySpec
+  $* --allow-running-no-tests >- 2>&1
+}

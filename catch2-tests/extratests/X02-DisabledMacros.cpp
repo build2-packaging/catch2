@@ -1,1 +1,1 @@
-../../upstream/projects/ExtraTests/X02-DisabledMacros.cpp
+../../upstream/tests/ExtraTests/X02-DisabledMacros.cpp

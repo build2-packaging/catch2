@@ -1,0 +1,17 @@
+: Reporters
+{
+  : PreferencesForPassingAssertionsIsRespected
+  $* --reporter test-reporter >>EOM
+  X26 - TestReporter constructed
+  EOM
+}
+
+: MultiReporter
+{
+  nulfile = ($cxx.target.class == 'windows' ? nul : /dev/null)
+
+  : PreferencesForPassingAssertionsIsRespected
+  $* --reporter test-reporter --reporter "console::$nulfile" >>EOM
+  X26 - TestReporter constructed
+  EOM
+}
