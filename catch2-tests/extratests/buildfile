@@ -47,7 +47,7 @@ if($cxx.id == 'msvc')
 # Not updated for this release
 # ./: exe{DebugBreakMacros}: cxx{X12-CustomDebugBreakMacro} $catch2_lib testscript{DebugBreakMacros}
 
-./: exe{CapturedStdOutInTestCaseEvents}: cxx{X27-CapturedStdOutInTestCaseEvents} $catch2_lib testscript{CapturedStdOutInTestCaseEvents}
+./: exe{CapturedStdOutInTestCaseEvents}: cxx{X27-CapturedStdoutInTestCaseEvents} $catch2_lib testscript{CapturedStdOutInTestCaseEvents}
 
 ./: exe{ListenerStdoutCaptureInMultireporter}: cxx{X24-ListenerStdoutCaptureInMultireporter} $catch2_lib testscript{ListenerStdoutCaptureInMultireporter}
 
