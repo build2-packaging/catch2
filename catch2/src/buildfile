@@ -3,7 +3,10 @@
 pub = [dir_path] ../include
 include $pub
 lib{catch2}: $pub/{$($pub/ pub_hdrs)}
+
 liba{catch2wmain}: cxx{catch_with_main} lib{catch2}
+if ($config.catch2.default_reporter != "")
+  obj{catch_with_main}: cxx.poptions += -DCATCH_CONFIG_DEFAULT_REPORTER=\"$config.catch2.default_reporter\"
 
 # Build options.
 out_pfx_inc = [dir_path] $out_root/include/
