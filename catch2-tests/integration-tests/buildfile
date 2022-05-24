@@ -1,10 +1,12 @@
 import catch2_lib = catch2%lib{catch2}
 ./: exe{test}: cxx{test} $catch2_lib
 
-if ($config.bin.lib == both || $config.bin.lib == static)
+use_catch2_w_main = ($config.bin.lib == both || $config.bin.lib == static)
+if ($use_catch2_w_main)
 {
   import catch2_main_lib = catch2%liba{catch2wmain}
-  ./: exe{testwmain}: cxx{test_w_staticlib} $catch2_main_lib
+  ./: exe{testwmain}: $catch2_main_lib
 }
+exe{testwmain}: cxx{test_w_staticlib}: include = $use_catch2_w_main
 
 exe{*}: test = true
