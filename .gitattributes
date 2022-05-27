@@ -17,3 +17,11 @@
 # Use `binary` to make sure certain files are never auto-detected as text.
 #
 #*.png binary
+
+# Allow directory symlinks on Windows
+catch2/src/catch2/benchmarks symlink=dir
+catch2/src/catch2/generators symlink=dir
+catch2/src/catch2/interfaces symlink=dir
+catch2/src/catch2/internal   symlink=dir
+catch2/src/catch2/matchers   symlink=dir
+catch2/src/catch2/reporters  symlink=dir
