@@ -19,9 +19,14 @@
 #*.png binary
 
 # Allow directory symlinks on Windows
-catch2/src/catch2/benchmarks symlink=dir
-catch2/src/catch2/generators symlink=dir
-catch2/src/catch2/interfaces symlink=dir
-catch2/src/catch2/internal   symlink=dir
-catch2/src/catch2/matchers   symlink=dir
-catch2/src/catch2/reporters  symlink=dir
+catch2/src/catch2/benchmark              symlink=dir
+catch2/src/catch2/generators             symlink=dir
+catch2/src/catch2/interfaces             symlink=dir
+catch2/src/catch2/internal               symlink=dir
+catch2/src/catch2/matchers               symlink=dir
+catch2/src/catch2/reporters              symlink=dir
+catch2-tests/selftest/IntrospectiveTests symlink=dir
+catch2-tests/selftest/Misc               symlink=dir
+catch2-tests/selftest/TimingTests        symlink=dir
+catch2-tests/selftest/UsageTests         symlink=dir
+catch2-tests/extratests/extras           symlink=dir
