@@ -1,5 +1,5 @@
 : RunTests
-$* --order rand --rng-seed time >>~%EOM%
+$* --order rand --rng-seed time >>~%EOM% 2>&1
 %(
 %((?!Filters\:).)*%
 %)+
