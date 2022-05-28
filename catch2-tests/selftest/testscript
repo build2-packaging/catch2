@@ -193,7 +193,7 @@ EOM
 : VersionCheck
 $* -h >>~%EOM%
 
-%Catch v3\.0\.0-preview.*%
+%Catch v3\.0\.1*%
 %(
 %.*%
 %)*?

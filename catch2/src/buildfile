@@ -1,38 +1,4 @@
 
-# Configuration requirements set default string values
-# With these default values catch2 will autodetect and to the right thing
-# Tri state force/no force configuration
-# CATCH_CONFIG_ANDROID_LOGWRITE_STR = ""
-# $CATCH_CONFIG_ANDROID_COLOUR_WIN32_STR$
-# $CATCH_CONFIG_COUNTER_STR$
-# $CATCH_CONFIG_CPP11_TO_STRING_STR$
-# $CATCH_CONFIG_CPP17_BYTE_STR$
-# $CATCH_CONFIG_CPP17_OPTIONAL_STR$
-# $CATCH_CONFIG_CPP17_STRING_VIEW_STR$
-# $CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS_STR$
-# $CATCH_CONFIG_CPP17_VARIANT_STR$
-# $CATCH_CONFIG_GLOBAL_NEXTAFTER_STR$
-# $CATCH_CONFIG_POSIX_SIGNALS_STR$
-# $CATCH_CONFIG_USE_ASYNC_STR$
-# $CATCH_CONFIG_WCHAR_STR$
-# $CATCH_CONFIG_WINDOWS_SEH_STR$
-# 
-# # Bi state configurations
-# CATCH_CONFIG_DISABLE_EXCEPTIONS_STR = ""
-# CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER_STR = ""
-# CATCH_CONFIG_DISABLE_STR = ""
-# CATCH_CONFIG_DISABLE_STRINGIFICATION_STR = ""
-# CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS_STR = ""
-# CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER_STR = ""
-# CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER_STR = ""
-# CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER_STR = ""
-# CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER_STR = ""
-# CATCH_CONFIG_EXPERIMENTAL_REDIRECT_STR = ""
-# CATCH_CONFIG_FAST_COMPILE_STR = ""
-# CATCH_CONFIG_NOSTDOUT_STR = ""
-# CATCH_CONFIG_PREFIX_ALL_STR = ""
-# CATCH_CONFIG_WINDOWS_CRTDBG_STR = ""
-
 # Create user configuration file
 hxx{catch2/catch_user_config}: in{catch2/catch_user_config.hpp.in}
 
@@ -42,13 +8,12 @@ liba{catch2wmain}: catch2/internal/cxx{catch_main} liba{catch2}
 
 
 # Build options.
-out_pfx_inc = [dir_path] $out_root/include/
 out_pfx_src = [dir_path] $out_root/src/
 src_pfx_src = [dir_path] $src_root/src/
 
-cxx.poptions =+ "-I$src_base" "-I$out_pfx_src"
+cxx.poptions =+ "-I$src_pfx_src" "-I$out_pfx_src"
 
-cxx.export.poptions += "-I$out_pfx_inc" "-I$src_pfx_src"
+cxx.export.poptions += "-I$src_pfx_src" "-I$out_pfx_src" 
 liba{catch2wmain}: cxx.export.poptions += -DCATCH2_BUILD_STATIC_WITH_MAIN
 liba{catch2wmain}: bin.whole = true
 
