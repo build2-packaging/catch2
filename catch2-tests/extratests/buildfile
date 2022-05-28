@@ -51,7 +51,13 @@ if($cxx.id == 'msvc')
 
 ./: exe{ListenerStdoutCaptureInMultireporter}: cxx{X24-ListenerStdoutCaptureInMultireporter} $catch2_lib testscript{ListenerStdoutCaptureInMultireporter}
 
+./: exe{ListenerCanAskForCapturedStdout}: cxx{X25-ListenerCanAskForCapturedStdout} $catch2_lib testscript{ListenerCanAskForCapturedStdout}
+
 ./: exe{ReporterPreferencesForPassingAssertionsIsRespected}: cxx{X26-ReporterPreferencesForPassingAssertionsIsRespected} $catch2_lib testscript{ReporterPreferencesForPassingAssertionsIsRespected}
+
+./: exe{ListenersGetEventsBeforeReporters}: cxx{X28-ListenersGetEventsBeforeReporters} $catch2_lib testscript{ListenersGetEventsBeforeReporters}
+
+./: exe{CustomArgumentsForReporters}: cxx{X29-CustomArgumentsForReporters} $catch2_lib testscript{CustomArgumentsForReporters}
 
 ./: exe{DuplicatedTestCases-SameNameAndTags}: cxx{X31-DuplicatedTestCases} $catch2_lib testscript{DuplicatedTestCases-SameNameAndTags}
 
@@ -60,6 +66,8 @@ if($cxx.id == 'msvc')
 ./: exe{DuplicatedTestCases-DuplicatedTestCaseMethods}: cxx{X33-DuplicatedTestCaseMethods} $catch2_lib testscript{DuplicatedTestCases-DuplicatedTestCaseMethods}
 
 ./: exe{DuplicatedTestCases-DifferentFixtures}: cxx{X34-DuplicatedTestCaseMethodsDifferentFixtures} $catch2_lib testscript{DuplicatedTestCases-DifferentFixtures}
+
+./: exe{DuplicatedReporterNames}: cxx{X35-DuplicatedReporterNames} $catch2_lib testscript{DuplicatedReporterNames}
 
 ./: exe{NoTests}: cxx{X92-NoTests} $catch2_lib testscript{NoTests}
 

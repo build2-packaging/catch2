@@ -3,16 +3,8 @@
   nulfile = ($cxx.target.class == 'windows' ? nul : /dev/null)
 
   : NoncapturingListenerDoesntCauseStdoutPassThrough
-  $* --reporter "xml::$nulfile" --reporter "junit::$nulfile" >>EOM 2>&1
+  $* --reporter "xml::out=$nulfile" --reporter "junit::out=$nulfile" >>EOM 2>&1
   X24 - NonCapturingListener initialized.
-  EOM
-
-  : CapturingListenerCausesStdoutCapture
-   $* --reporter "xml::$nulfile" --reporter "console::$nulfile" >>~%EOM% 2>&1
-  %.*CapturingListener initialized.*%
-  %(
-  %((?!X25 - ERROR).*)%
-  %)+?
   EOM
 
 }

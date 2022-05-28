@@ -11,7 +11,7 @@
   nulfile = ($cxx.target.class == 'windows' ? nul : /dev/null)
 
   : PreferencesForPassingAssertionsIsRespected
-  $* --reporter test-reporter --reporter "console::$nulfile" >>EOM
+  $* --reporter test-reporter --reporter "console::out=$nulfile" >>EOM
   X26 - TestReporter constructed
   EOM
 }

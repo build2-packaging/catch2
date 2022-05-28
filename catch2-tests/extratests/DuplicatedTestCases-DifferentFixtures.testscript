@@ -1,5 +1,5 @@
 : DuplicatedTestCases-DifferentFixtures
-$* -r compact >>~%EOM%
+$* >>~%EOM%
 %(
 %((?!error).*)%
 %)+?

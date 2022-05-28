@@ -1,5 +1,5 @@
 : DuplicatedTestCases-SameNameAndTags
-$* -r compact 1>- 2>>~%EOM% != 0
+$* 1>- 2>>~%EOM% != 0
 %error.*already defined.*%
 %(
 %.*%

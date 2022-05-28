@@ -1,0 +1,13 @@
+: MultiReporter
+{
+  nulfile = ($cxx.target.class == 'windows' ? nul : /dev/null)
+
+  : CapturingListenerCausesStdoutCapture
+   $* --reporter "xml::out=$nulfile" --reporter "console::out=$nulfile" >>~%EOM% 2>&1
+  %.*CapturingListener initialized.*%
+  %(
+  %((?!X25 - ERROR).*)%
+  %)+?
+  EOM
+
+}

@@ -97,6 +97,30 @@ if ($cxx.target.class != 'windows')
 
 }
 
+: ListListeners
+: Return value is not zero here but number of listeners
+{
+  $* --list-listeners >>~%EOM%
+  Registered listeners:
+  %(
+  %.*%
+  %)+
+  EOM
+
+ 
+  : XmlOutput
+  $* --list-listeners -r xml >>~%EOM%
+  %(
+  %.*%
+  %)+?
+  %.*<RegisteredListeners>%
+  %(
+  %.*%
+  %)+?
+  EOM
+
+}
+
 : NoAssertions
 $* -w NoAssertions "An empty test with no assertions" >>~%EOM% != 0
 %(
@@ -108,39 +132,51 @@ $* -w NoAssertions "An empty test with no assertions" >>~%EOM% != 0
 %)+
 EOM
 
-: NonMatchingIsOk
-$* Tracker, "___nonexistent_test___" >>~%EOM%
-%.*%
-%No test cases matched '___nonexistent_test___'%
-%(
-%.*%
-%)+
-EOM
+: TestSpecs
+{
+  : CombiningMatchingAndNonMatchingIsOk
+  $* Tracker, "___nonexistent_test___" >>~%EOM%
+  %(
+  %.*%
+  %)+
+  %No test cases matched '___nonexistent_test___'%
+  %(
+  %.*%
+  %)+
+  EOM
 
-: NonMatchedTestsFail
-$* "___nonexistent_test___" >- != 0
+ 
+  : NonMatchedTestsFail
+  $* "___nonexistent_test___" >- != 0
+  
+  : OverrideFailureWithNoMatchedTests
+  $* "___nonexistent_test___" --allow-running-no-tests >-
 
-: OverrideFailureWithNoMatchedTests
-$* "___nonexistent_test___" --allow-running-no-tests >-
+  : WarnUnmatchedTestSpecFailsWithUnmatchedTestSpec
+  $* Tracker, "___nonexistent_test___" --warn UnmatchedTestSpec >- != 0
 
-: UnmatchedTestSpecIsAccepted
-$* Tracker --warn UnmatchedTestSpec >>~%EOM%
-%(
-%((?!Unrecognised warning option:).)*%
-%)+?
-EOM
+  
+} 
 
-: MultipleWarningsCanBeSpecified
-$* Tracker --warn NoAssertions --warn UnmatchedTestSpec >-
+: Warnings
+{
+  : UnmatchedTestSpecIsAccepted
+  $* Tracker --warn UnmatchedTestSpec >>~%EOM%
+  %(
+  %((?!Unrecognised warning option:).)*%
+  %)+?
+  EOM
 
-: WarnUnmatchedTestSpecFailsWithUnmatchedTestSpec
-$* Tracker, "___nonexistent_test___" --warn UnmatchedTestSpec >- != 0
+  : MultipleWarningsCanBeSpecified
+  $* Tracker --warn NoAssertions --warn UnmatchedTestSpec >-
+
+}
 
 : UnmatchedOutputFilter
 $* [this-tag-does-not-exist] >>~%EOM% != 0
 %(
 %.*%
-%)
+%)+
 No test cases matched '[this-tag-does-not-exist]'
 %(
 %.*%
@@ -167,7 +203,7 @@ EOM
   $* "#2025: original repro" -c "fov_0" >>~%EOM%
   %(
   %.*%
-  %)
+  %)+
   inside with fov: 0
   %(
   %.*%
@@ -186,6 +222,9 @@ EOM
 
 : RegressionCheck-1670
 $* "#1670 regression check" -c A -r compact >>~%EOM%
+%(
+%.*%
+%)+
 Passed 1 test case with 2 assertions.
 
 EOM
@@ -193,7 +232,7 @@ EOM
 : VersionCheck
 $* -h >>~%EOM%
 
-%Catch v3\.0\.1*%
+%Catch2 v3\.0\.1%
 %(
 %.*%
 %)*?
@@ -286,8 +325,18 @@ EOM
 
 : Benchmarking
 {
+  :SkipBenchmarkMacros
+  $* "Skip benchmark macros" --reporter console --skip-benchmarks >>~%EOM%
+  %(
+  %.*%
+  %)+
+  All tests passed (2 assertions in 1 test case)
+
+  EOM
+
   : FailureReporting
   {
+
     : TrowingBenchmark
     $* "Failing benchmarks" -c "throw" -r xml >>~%EOM% != 0
     %(
@@ -345,10 +394,10 @@ EOM
   nulfile = ($cxx.target.class == 'windows' ? nul : /dev/null)
 
   : CapturingReportersDontPropagateStdOut
-  $* "Sends stuff to stdout and stderr" --reporter "xml::$nulfile" --reporter "junit::$nulfile" >- 2>&1
+  $* "Sends stuff to stdout and stderr" --reporter "xml::out=$nulfile" --reporter "junit::out=$nulfile" >- 2>&1
 
   : NonCapturingReportersPropagateStdout
-  $* "Sends stuff to stdout and stderr" --reporter "xml::$nulfile" --reporter "console::$nulfile" >>~%EOM% 2>&1
+  $* "Sends stuff to stdout and stderr" --reporter "xml::out=$nulfile" --reporter "console::out=$nulfile" >>~%EOM% 2>&1
   %(
   %.*%
   %)+
@@ -371,14 +420,126 @@ EOM
 : Reporters
 {
   : DashAsLocationInReportersSpecSendsOutputToStdout
-  $* "Factorials are computed" --reporter "console::-" >>~%EOM%
+  $* "Factorials are computed" --reporter "console::out=-" >>~%EOM%
   %(
   %.*%
   %)+
   All tests passed (5 assertions in 1 test case)
 
   EOM
+
+ : ReporterSpecificColourOverridesDefaultColour
+ : The control character may depend on the terminal
+ $* "Factorials are computed" --reporter "console::colour-mode=ansi" --colour-mode "none" >>~%EOM%
+ %(
+ %.*%
+ %)+
+ %.+\[1\;32mAll tests passed.*%
+
+ EOM
+
+ : UnrecognizedOptionInSpecCausesError
+ : The control character may depend on the terminal
+ $* "Factorials are computed" --reporter "console::bad-option=ansi" 2>>~%EOM%  != 0
+ %(
+ %.*%
+ %)+
+ EOM
+
+ : RngSeed
+ {
+   : console
+   $* "Factorials are computed" --reporter "console" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*
+   %)+
+   %.*18181818.*%
+   %(
+   %.*
+   %)+
+   EOM
+
+   : compact
+   $* "Factorials are computed" --reporter "compact" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*
+   %)+
+   %.*18181818.*%
+   %(
+   %.*
+   %)+
+   EOM
+
+   : JUnit
+   $* "Factorials are computed" --reporter "JUnit" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*
+   %)+
+   %.*18181818.*%
+   %(
+   %.*
+   %)+
+   EOM
+
+   : SonarQube
+   $* "Factorials are computed" --reporter "SonarQube" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*
+   %)+
+   %.*18181818.*%
+   %(
+   %.*
+   %)+
+   EOM
+
+   : TAP
+   $* "Factorials are computed" --reporter "TAP" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*
+   %)+
+   %.*18181818.*%
+   %(
+   %.*
+   %)+
+   EOM
+
+   : XML
+   $* "Factorials are computed" --reporter "XML" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*
+   %)+
+   %.*18181818.*%
+   %(
+   %.*
+   %)+
+   EOM
+
+ }
+
 }
+
+: Colours
+{
+  : ColourModeCanBeExplicitlySetToAnsi
+  $* "Factorials are computed" --reporter "console" --colour-mode "ansi" >>~%EOM%
+  %(
+  %.*%
+  %)+
+  %.+\[1\;32mAll tests passed.*%
+
+  EOM
+
+}
+
+: TestSharding
+{
+  : OverlyLargeShardIndex
+  $* --shard-index 5 --shard-count 5 2>>~%EOM% != 0
+  The shard count (5) must be greater than the shard index (5)
+  EOM
+
+}
+
 
 : MinDuration
 {
