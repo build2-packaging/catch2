@@ -451,66 +451,63 @@ EOM
    : console
    $* "Factorials are computed" --reporter "console" --rng-seed 18181818 >>~%EOM%
    %(
-   %.*
+   %.*%
    %)+
    %.*18181818.*%
    %(
-   %.*
+   %.*%
    %)+
    EOM
 
    : compact
    $* "Factorials are computed" --reporter "compact" --rng-seed 18181818 >>~%EOM%
    %(
-   %.*
+   %.*%
    %)+
    %.*18181818.*%
    %(
-   %.*
+   %.*%
    %)+
    EOM
 
    : JUnit
    $* "Factorials are computed" --reporter "JUnit" --rng-seed 18181818 >>~%EOM%
    %(
-   %.*
+   %.*%
    %)+
    %.*18181818.*%
    %(
-   %.*
+   %.*%
    %)+
    EOM
 
    : SonarQube
    $* "Factorials are computed" --reporter "SonarQube" --rng-seed 18181818 >>~%EOM%
    %(
-   %.*
+   %.*%
    %)+
    %.*18181818.*%
    %(
-   %.*
+   %.*%
    %)+
    EOM
 
    : TAP
    $* "Factorials are computed" --reporter "TAP" --rng-seed 18181818 >>~%EOM%
-   %(
-   %.*
-   %)+
    %.*18181818.*%
    %(
-   %.*
+   %.*%
    %)+
    EOM
 
    : XML
    $* "Factorials are computed" --reporter "XML" --rng-seed 18181818 >>~%EOM%
    %(
-   %.*
+   %.*%
    %)+
    %.*18181818.*%
    %(
-   %.*
+   %.*%
    %)+
    EOM
 
