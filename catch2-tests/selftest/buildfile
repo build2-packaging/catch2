@@ -9,3 +9,8 @@ cxx.poptions += "-I$src_base/include"
 # Required for "Broken String test"
 if ($cxx.id == 'msvc')
   cxx.coptions += \/utf-8
+
+# On FreeBSD the auto detection of colour mode is not properly detected on console redirect
+# There are colour codes written out which fails regex match
+if($cxx.target.class == 'freebsd')
+  exe{selftest}: test.options =+ --colour-mode none

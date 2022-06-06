@@ -430,7 +430,8 @@ EOM
 
  : ReporterSpecificColourOverridesDefaultColour
  : The control character may depend on the terminal
- $* "Factorials are computed" --reporter "console::colour-mode=ansi" --colour-mode "none" >>~%EOM%
+ : Ignore any additional args passed - On FreeBSD colour-mode none is default which causes conflicts
+ $0 "Factorials are computed" --reporter "console::colour-mode=ansi" --colour-mode "none" >>~%EOM%
  %(
  %.*%
  %)+
@@ -518,7 +519,8 @@ EOM
 : Colours
 {
   : ColourModeCanBeExplicitlySetToAnsi
-  $* "Factorials are computed" --reporter "console" --colour-mode "ansi" >>~%EOM%
+  : Ignore any additional args passed - On FreeBSD colour-mode none is default which causes conflicts
+  $0 "Factorials are computed" --reporter "console" --colour-mode "ansi" >>~%EOM%
   %(
   %.*%
   %)+
