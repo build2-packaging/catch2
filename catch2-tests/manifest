@@ -11,4 +11,4 @@ depends: * build2 >= 0.13.0
 depends: * bpkg >= 0.13.0
 requires: c++14
 requires: ? ; VC15 or later if targeting windows
-build-exclude: *mingw* ; Issue with upstream when compiling SelfTest with MinGW see upstream issue #2447
+build-exclude: **mingw** ; Issue with upstream when compiling SelfTest with MinGW see upstream issue #2447
