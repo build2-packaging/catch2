@@ -1,0 +1,8 @@
+: CustomArgumentsForReporters
+$* --reporter "test-reporter::Xa b=c 1::Xz:e = 1234" >>~%EOM% 2>&1
+%(
+%.*%
+%)+
+%.*Xa b=c 1::Xz:e = 1234.*%
+EOM
+

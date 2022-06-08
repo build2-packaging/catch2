@@ -1,1 +1,0 @@
-../../../upstream/projects/SelfTest/UsageTests/ToStringVariant.tests.cpp

@@ -1,5 +1,5 @@
 : RunTests
-$* >>~%EOM%
+$* --order rand --rng-seed time >>~%EOM% 2>&1
 %(
 %((?!Filters\:).)*%
 %)+
@@ -11,127 +11,228 @@ if ($cxx.target.class != 'windows')
 {  
   : ListTests
   : Return value is not zero here but number of test - which can change a lot
-  $* --list-tests --verbosity high >>~%EOM% != 0
-  %(
-  %((?!Hidden Test).)*%
-  %)+?
-  %(
-  %.*?[0-9]+? test cases%
-  %.*%
-  %)
-  EOM
+  {
+    : HighVerbosity
+    $* --list-tests --verbosity high >>~%EOM%
+    %(
+    %((?!Hidden Test).)*%
+    %)+?
+    %(
+    %.*?[0-9]+? test cases%
+    %.*%
+    %)
+    EOM
+
+    : Quite
+    $* --list-tests --verbosity quiet >>~%EOM%
+    %(
+    %.*%
+    %)+
+    %^"#1905 -- test spec parser properly clears internal state between compound tests"$%
+    %(
+    %.*%
+    %)+
+    EOM
+
+    : XmlOutput
+    $* --list-tests --verbosity high -r xml >>~%EOM%
+    %(
+    %.*%
+    %)+
+    %.*<Line>[0-9]+</Line>%
+    %(
+    %.*%
+    %)+
+    EOM
+  }
 }
 
 : ListTags
-$* --list-tags >>~%EOM% != 0
-All available tags:
-%(
-%.*%
-%)+
-EOM
+{
+  $* --list-tags >>~%EOM%
+  All available tags:
+  %(
+  %.*%
+  %)+
+  %[0-9]+ tags%
+
+  EOM
+
+  if ($cxx.target.class != 'windows')
+  {
+    : XmlOutput
+    $* --list-tags -r xml >>~%EOM%
+    %(
+    %.*%
+    %)+?
+    %.*<Count>18</Count>%
+    %(
+    %.*%
+    %)+?
+    EOM
+  }
+}
 
 : ListReporters
 : Return value is not zero here but number of reporters
-$* --list-reporters >>~%EOM% != 0
-Available reporters:
-%(
-%.*%
-%)+
-EOM
+{
+  $* --list-reporters >>~%EOM%
+  Available reporters:
+  %(
+  %.*%
+  %)+
+  EOM
 
-: ListTestNamesOnly
-: Return value is not zero here but number of tests
-$* --list-test-names-only >>~%EOM% !=0
-%(
-%((?!Hidden Test).)*%
-%)+?
-%Regex string matcher.*%
-%(
-%((?!Hidden Test).)*%
-%)+
-EOM
+ 
+  : XmlOutput
+  $* --list-reporters -r xml >>~%EOM%
+  %(
+  %.*%
+  %)+?
+  %.*<Name>compact</Name>%
+  %(
+  %.*%
+  %)+?
+  EOM
+
+}
+
+: ListListeners
+: Return value is not zero here but number of listeners
+{
+  $* --list-listeners >>~%EOM%
+  Registered listeners:
+  %(
+  %.*%
+  %)+
+  EOM
+
+ 
+  : XmlOutput
+  $* --list-listeners -r xml >>~%EOM%
+  %(
+  %.*%
+  %)+?
+  %.*<RegisteredListeners>%
+  %(
+  %.*%
+  %)+?
+  EOM
+
+}
 
 : NoAssertions
-$* -w NoAssertions >>~%EOM% != 0
+$* -w NoAssertions "An empty test with no assertions" >>~%EOM% != 0
 %(
 %.*%
-%)+?
-%(No assertions in test case).*%
+%)+
+%No assertions in test case.*%
 %(
 %.*%
-%)+?
+%)+
 EOM
 
-: NoTest
-$* Tracker, "___nonexistent_test___" >>~%EOM%
-%(
-%.*(?!No tests run).*%
-%)+?
-%No test cases matched '___nonexistent_test___'.*%
-%(
-%.*(?!No tests run).*%
-%)+?
-EOM
+: TestSpecs
+{
+  : CombiningMatchingAndNonMatchingIsOk
+  $* Tracker, "___nonexistent_test___" >>~%EOM%
+  %(
+  %.*%
+  %)+
+  %No test cases matched '___nonexistent_test___'%
+  %(
+  %.*%
+  %)+
+  EOM
+
+ 
+  : NonMatchedTestsFail
+  $* "___nonexistent_test___" >- != 0
+  
+  : OverrideFailureWithNoMatchedTests
+  $* "___nonexistent_test___" --allow-running-no-tests >-
+
+  : WarnUnmatchedTestSpecFailsWithUnmatchedTestSpec
+  $* Tracker, "___nonexistent_test___" --warn UnmatchedTestSpec >- != 0
+
+  
+} 
+
+: Warnings
+{
+  : UnmatchedTestSpecIsAccepted
+  $* Tracker --warn UnmatchedTestSpec >>~%EOM%
+  %(
+  %((?!Unrecognised warning option:).)*%
+  %)+?
+  EOM
+
+  : MultipleWarningsCanBeSpecified
+  $* Tracker --warn NoAssertions --warn UnmatchedTestSpec >-
+
+}
 
 : UnmatchedOutputFilter
-$* [this-tag-does-not-exist] -w NoTests >>~%EOM% != 0
+$* [this-tag-does-not-exist] >>~%EOM% != 0
 %(
 %.*%
-%)*?
+%)+
 No test cases matched '[this-tag-does-not-exist]'
 %(
 %.*%
-%)*?
+%)+
 EOM
 
-: FilteredSection_1
-$* \#1394 -c RunSection >>~%EOM%
-%(
-%((?!No tests ran).)*%
-%)*?
-EOM
+: Filtered
+{
+  : Section-1
+  $* \#1394 -c RunSection >>~%EOM%
+  %(
+  %((?!No tests run).)*%
+  %)+
+  EOM
 
-: FilteredSection_2
-$* \#1394\ nested -c NestedRunSection >>~%EOM%
-%(
-%((?!No tests ran).)*%
-%)*?
-EOM
+  : Section-2
+  $* "#1394 nested" -c NestedRunSection -c s1 >>~%EOM%
+  %(
+  %((?!No tests run).)*%
+  %)+
+  EOM
 
-: FilteredSection_GeneratorsDontCauseInfiniteLoop_1
-$* "#2025: original repro" -c "fov_0" >>~%EOM%
-%(
-%((?!inside with fov: 1).)*%
-%)*?
-inside with fov: 0
-%(
-%.*%
-%)*?
-EOM
+  : GeneratorsDontCauseInfiniteLoop-1
+  $* "#2025: original repro" -c "fov_0" >>~%EOM%
+  %(
+  %.*%
+  %)+
+  inside with fov: 0
+  %(
+  %.*%
+  %)+
+  EOM
 
-: FilteredSection_GeneratorsDontCauseInfiniteLoop_2
-$* "#2025: same-level sections" -c "A" -c "B" >>~%EOM%
-%(
-%.*%
-%)*?
-All tests passed (4 assertions in 1 test case)
-%(
-%.*%
-%)*?
-EOM
+  : GeneratorsDontCauseInfiniteLoop-2
+  $* "#2025: same-level sections" -c "A" -c "B" >>~%EOM%
+  %(
+  %.*%
+  %)+
+  All tests passed (4 assertions in 1 test case)
+  
+  EOM
+}
 
-: RegressionCheck_1670
+: RegressionCheck-1670
 $* "#1670 regression check" -c A -r compact >>~%EOM%
+%(
+%.*%
+%)+
 Passed 1 test case with 2 assertions.
 
 EOM
 
 : VersionCheck
 $* -h >>~%EOM%
-%(
-%.*%
-%)*?
-%Catch v2\.13\.9%
+
+%Catch2 v3\.0\.1%
 %(
 %.*%
 %)*?
@@ -146,7 +247,7 @@ description:    A Catch2 test executable
 EOM
 
 : FilenameAsTagsTest
-$* -\# --list-tags >>~%EOM% != 0
+$* -\# --list-tags >>~%EOM%
 %(
 %.*%
 %)*?
@@ -154,9 +255,11 @@ $* -\# --list-tags >>~%EOM% != 0
 %(
 %.*%
 %)*?
+%[0-9]+ tags%
+
 EOM
 
-: EscapeSpecialCharacters
+: EscapeSpecialCharactersInTestNames
 $* "Test with special\\, characters \"in name" >>~%EOM%
 %(
 %.*%
@@ -167,78 +270,310 @@ $* "Test with special\\, characters \"in name" >>~%EOM%
 %)*
 EOM
 
-: TestsInFile_SimpleSpecs
-$* -f $src_base/Misc/plain-old-tests.input >>~%EOM%
+: NegativeSpecNoHiddenTests
+if ($cxx.target.class != 'windows')
+{
+  $* --list-tests ~[approval] >>~%EOM%
+  %(
+  %((?!\[\.\]).)*%
+  %)+
+  EOM
+}
+
+: TestsInFile
+{
+ : SimpleSpecs
+ $* -f $src_base/Misc/plain-old-tests.input >>~%EOM%
+ %(
+ %.*%
+ %)*?
+ %.*?6 assertions in 2 test cases.*?%
+ %(
+ %.*%
+ %)*
+ EOM
+ 
+ : EscapeSpecialCharacters
+ $* -f $src_base/Misc/special-characters-in-file.input >>~%EOM%
+ %(
+ %.*%
+ %)*?
+ %.*?1 assertion in 1 test case.*?%
+ %(
+ %.*%
+ %)*
+ EOM
+ 
+ : InvalidTestNames-1
+ $* -f $src_base/Misc/invalid-test-names.input >>~%EOM% != 0
+ Invalid Filter: "Test with special, characters in \" name"
+ %(
+ %.*%
+ %)*?
+ EOM
+
+}
+
+: TagAlias
+$* [@tricky] --list-tests >>~%EOM%
 %(
 %.*%
-%)*?
-%.*?6 assertions in 2 test cases.*?%
-%(
-%.*%
-%)*
+%)+
+%[0-9]+ matching test cases%
+
 EOM
 
-: TestsInFile_EscapeSpecialCharacters
-$* -f $src_base/Misc/special-characters-in-file.input >>~%EOM%
-%(
-%.*%
-%)*?
-%.*?1 assertion in 1 test case.*?%
-%(
-%.*%
-%)*
-EOM
+: Benchmarking
+{
+  :SkipBenchmarkMacros
+  $* "Skip benchmark macros" --reporter console --skip-benchmarks >>~%EOM%
+  %(
+  %.*%
+  %)+
+  All tests passed (2 assertions in 1 test case)
 
-: TestsInFile_InvalidTestNames_1
-$* -f $src_base/Misc/invalid-test-names.input >>~%EOM%
-Invalid Filter: "Test with special, characters in \" name"
-%(
-%.*%
-%)*?
-EOM
+  EOM
 
-: TestsInFile_InvalidTestNames_2
-$* -f $src_base/Misc/invalid-test-names.input >>~%EOM%
-%(
-%.*%
-%)*?
-No tests ran
+  : FailureReporting
+  {
 
-EOM
+    : TrowingBenchmark
+    $* "Failing benchmarks" -c "throw" -r xml >>~%EOM% != 0
+    %(
+    %.*%
+    %)+
+    %.*<failed message="just a plain literal.*%
+    %(
+    %.*%
+    %)+
+    EOM
 
-: MinDuration_SimpleThreshold
-$* --min-duration 0.22 [min_duration_test] >>~%EOM%
-%(
-%((?!sleep_for_100ms).*)%
-%)+?
-%.*?s: sleep_for_250ms%
-%(
-%.*%
-%)+?
-EOM
+    : FailedAssertions
+    $* "Failing benchmarks" -c "assert" -r xml >>~%EOM% != 0
+    %(
+    %.*%
+    %)+
+    %.*<Expression success="false".*%
+    %(
+    %.*%
+    %)+
+    EOM
 
-: MinDuration_DurationOverrideYes
-: -d yes overrides the threshold
-:
-: We should see the faster test even
-: with a ridiculous high min duration threshold
-$* --min-duration 1.0 -d yes [min_duration_test] >>~%EOM%
-%(
-%.*%
-%)+?
-%.*?s: sleep_for_100ms%
-%(
-%.*%
-%)+?
-EOM
+    : FailMacro
+    $* "Failing benchmarks" -c "fail" -r xml >>~%EOM% != 0
+    %(
+    %.*%
+    %)+
+    %.*This benchmark only fails, nothing else.*%
+    %(
+    %.*%
+    %)+
+    EOM
 
-: MinDuration_DurationOverrideNo
-: -d no overrides the threshold
-:
-: We should never see any tests even
-: with ridiculously low min duration threshold
-$* --min-duration 0.0001 -d no [min_duration_test] >>~%EOM%
-%(
-%((?!sleep_for_250ms).*)%
-%)+?
-EOM
+    : ShouldFailIsRespected
+    $* "Failing benchmark respects should-fail" >>~%EOM%
+    %(
+    %.*%
+    %)+
+    %.*1 failed as expected%
+
+    EOM
+  }
+}
+
+: ErrorHandling
+{
+  : InvalidTestSpecExistsEarly
+  $* "[aa,a]" >>~%EOM% !=0
+  Invalid Filter: [aa,a]
+  EOM
+}
+
+: MultiReporter
+{
+  nulfile = ($cxx.target.class == 'windows' ? nul : /dev/null)
+
+  : CapturingReportersDontPropagateStdOut
+  $* "Sends stuff to stdout and stderr" --reporter "xml::out=$nulfile" --reporter "junit::out=$nulfile" >- 2>&1
+
+  : NonCapturingReportersPropagateStdout
+  $* "Sends stuff to stdout and stderr" --reporter "xml::out=$nulfile" --reporter "console::out=$nulfile" >>~%EOM% 2>&1
+  %(
+  %.*%
+  %)+
+  A string sent to stderr via clog
+  EOM
+}
+
+: Outputs
+{
+  : DashAsOutLocationSendsOutputToStdout
+  $* "Factorials are computed" --out=- >>~%EOM%
+  %(
+  %.*%
+  %)+
+  All tests passed (5 assertions in 1 test case)
+
+  EOM
+}
+
+: Reporters
+{
+  : DashAsLocationInReportersSpecSendsOutputToStdout
+  $* "Factorials are computed" --reporter "console::out=-" >>~%EOM%
+  %(
+  %.*%
+  %)+
+  All tests passed (5 assertions in 1 test case)
+
+  EOM
+
+ : ReporterSpecificColourOverridesDefaultColour
+ : The control character may depend on the terminal
+ : Ignore any additional args passed - On FreeBSD colour-mode none is default which causes conflicts
+ $0 "Factorials are computed" --reporter "console::colour-mode=ansi" --colour-mode "none" >>~%EOM%
+ %(
+ %.*%
+ %)+
+ %.+\[1\;32mAll tests passed.*%
+
+ EOM
+
+ : UnrecognizedOptionInSpecCausesError
+ : The control character may depend on the terminal
+ $* "Factorials are computed" --reporter "console::bad-option=ansi" 2>>~%EOM%  != 0
+ %(
+ %.*%
+ %)+
+ EOM
+
+ : RngSeed
+ {
+   : console
+   $* "Factorials are computed" --reporter "console" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*18181818.*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : compact
+   $* "Factorials are computed" --reporter "compact" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*18181818.*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : JUnit
+   $* "Factorials are computed" --reporter "JUnit" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*18181818.*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : SonarQube
+   $* "Factorials are computed" --reporter "SonarQube" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*18181818.*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : TAP
+   $* "Factorials are computed" --reporter "TAP" --rng-seed 18181818 >>~%EOM%
+   %.*18181818.*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : XML
+   $* "Factorials are computed" --reporter "XML" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*18181818.*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+ }
+
+}
+
+: Colours
+{
+  : ColourModeCanBeExplicitlySetToAnsi
+  : Ignore any additional args passed - On FreeBSD colour-mode none is default which causes conflicts
+  $0 "Factorials are computed" --reporter "console" --colour-mode "ansi" >>~%EOM%
+  %(
+  %.*%
+  %)+
+  %.+\[1\;32mAll tests passed.*%
+
+  EOM
+
+}
+
+: TestSharding
+{
+  : OverlyLargeShardIndex
+  $* --shard-index 5 --shard-count 5 2>>~%EOM% != 0
+  The shard count (5) must be greater than the shard index (5)
+  EOM
+
+}
+
+
+: MinDuration
+{
+  : SimpleThreshold
+  $* --min-duration 0.950 [min_duration_test] >>~%EOM%
+  %(
+  %((?!sleep_for_100ms).*)%
+  %)+?
+  %.*?s: sleep_for_1000ms%
+  %(
+  %.*%
+  %)+?
+  EOM
+
+  : DurationOverrideYes
+  : -d yes overrides the threshold
+  : We should see the faster test even
+  : with a ridiculous high min duration threshold
+  $* --min-duration 1.0 -d yes [min_duration_test] >>~%EOM%
+  %(
+  %.*%
+  %)+?
+  %.*?s: sleep_for_100ms%
+  %(
+  %.*%
+  %)+?
+  EOM
+
+  : DurationOverrideNo
+  : -d no overrides the threshold
+  : We should never see any tests even
+  : with ridiculously low min duration threshold
+  $* --min-duration 0.0001 -d no [min_duration_test] >>~%EOM%
+  %(
+  %((?!sleep_for_250ms).*)%
+  %)+?
+  EOM
+}

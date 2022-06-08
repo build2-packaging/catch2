@@ -1,6 +1,6 @@
 : 1
 name: catch2-tests
-version: 2.13.9+1
+version: 3.0.1-a.0.z
 project: catch2
 summary: Catch2 test package
 license: BSL-1.0
@@ -11,3 +11,4 @@ depends: * build2 >= 0.13.0
 depends: * bpkg >= 0.13.0
 requires: c++14
 requires: ? ; VC15 or later if targeting windows
+build-exclude: *mingw* ; Issue with upstream when compiling SelfTest with MinGW see upstream issue #2447

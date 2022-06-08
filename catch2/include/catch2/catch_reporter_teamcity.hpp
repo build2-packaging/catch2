@@ -1,1 +1,0 @@
-../../../upstream/single_include/catch2/catch_reporter_teamcity.hpp

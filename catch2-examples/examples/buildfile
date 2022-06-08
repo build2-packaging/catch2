@@ -1,7 +1,11 @@
-import catch2_lib   = catch2%lib{catch2}
+import catch2_lib = catch2%liba{catch2wmain}
+import catch2_lib += catch2%liba{catch2}
 
 single_file_srcs    = 010-TestCase \
-                      231-Cfg-OutputStreams
+
+# 231-Cfg-OutputStreams require to recompile the library with different flags
+# This configuration is not supported in this package
+                      # 231-Cfg-OutputStreams
 
 srcs_020            = 020-TestCase-1 \
                       020-TestCase-2
@@ -22,19 +26,17 @@ src_idomatic_tests  = 030-Asn-Require-Check \
 srcs_reporters_main = 200-Rpt-CatchMain \
                       207-Rpt-TeamCityReporter
 
-libue{catchmain}         : cxx{$src_idomatic_main} $catch2_lib
-libue{catchmaincityteam} : cxx{200-Rpt-CatchMain} hxx{**} $catch2_lib                    
-obj{200-Rpt-CatchMain}   : cxx.poptions += -DCATCH_EXAMPLE_RPT_1=\"include/reporters/catch_reporter_teamcity.hpp\"
 
 for src : $single_file_srcs
 {
   ./: exe{$src}: cxx{$src} $catch2_lib  
 }
+#obj{231-Cfg_OutputStreams}: cxx.poptions += -DCATCH_CONFIG_NOSTDOUT
+
 
 for src : $src_idomatic_tests
 {
-  ./: exe{$src}: cxx{$src} libue{catchmain} $catch2_lib  
+  ./: exe{$src}: cxx{$src} $catch2_lib  
 }
 
 ./: exe{020-TestCase}: cxx{$srcs_020} $catch2_lib
-./: exe{207-Rpt-TeamCityReporter}: cxx{207-Rpt-TeamCityReporter} libue{catchmaincityteam} $catch2_lib

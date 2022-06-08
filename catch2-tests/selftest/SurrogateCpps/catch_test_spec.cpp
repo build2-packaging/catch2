@@ -1,1 +1,0 @@
-../../../upstream/projects/SelfTest/SurrogateCpps/catch_test_spec.cpp

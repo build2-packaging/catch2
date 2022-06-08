@@ -1,14 +1,269 @@
 cxx.std = latest
 
 using cxx
+using in
 
 hxx{*}: extension = hpp
-h{*}: extension = h
 cxx{*}: extension = cpp
 
 # The test target for cross-testing (running tests under Wine, etc).
 #
 test.target = $cxx.target
 
-# Define new config variable to set default reporter
-config [string] config.catch2.default_reporter ?= ""
+# Configuration variables
+
+config [bool] config.catch2.android_logwrite ?= [null]
+config [bool] config.catch2.colour_win32 ?= [null]
+config [bool] config.catch2.counter ?= [null]
+config [bool] config.catch2.cpp11_to_string ?= [null]
+config [bool] config.catch2.cpp17_byte ?= [null]
+config [bool] config.catch2.cpp17_optional ?= [null]
+config [bool] config.catch2.cpp17_string_view ?= [null]
+config [bool] config.catch2.cpp17_uncaught_exceptions ?= [null]
+config [bool] config.catch2.cpp17_variant ?= [null]
+config [bool] config.catch2.global_nextafter ?= [null]
+config [bool] config.catch2.posix_signals ?= [null]
+config [bool] config.catch2.use_async ?= [null]
+config [bool] config.catch2.wchar ?= [null]
+config [bool] config.catch2.windows_seh ?= [null]
+
+
+# Bi state config variables
+config [bool] config.catch2.disable_exceptions ?= false
+config [bool] config.catch2.disable_exceptions_custom_handler ?= false
+config [bool] config.catch2.disable ?= false
+config [bool] config.catch2.disable_stringification ?= false
+config [bool] config.catch2.enable_all_stringmakers ?= false
+config [bool] config.catch2.enable_optional_stringmaker ?= false
+config [bool] config.catch2.enable_pair_stringmaker ?= false
+config [bool] config.catch2.enable_tuple_stringmaker ?= false
+config [bool] config.catch2.enable_variant_stringmaker ?= false
+config [bool] config.catch2.experimental_redirect ?= false
+config [bool] config.catch2.fast_compile ?= false
+config [bool] config.catch2.nostdout ?= false
+config [bool] config.catch2.prefix_all ?= false
+config [bool] config.catch2.windows_crtdbg ?= false
+
+# Valued configurations
+config [string] config.catch2.default_reporter ?= "console"
+config [string] config.catch2.console_width ?= "80"
+config [string] config.catch2.fallback_stringifier ?= [null]
+
+switch $config.catch2.android_logwrite
+{
+  case [null]
+    CATCH_CONFIG_ANDROID_LOGWRITE_STR = ""
+  case true
+    CATCH_CONFIG_ANDROID_LOGWRITE_STR = "#define CATCH_CONFIG_ANDROID_LOGWRITE"
+  case false
+    CATCH_CONFIG_ANDROID_LOGWRITE_STR = "#define CATCH_CONFIG_NO_ANDROID_LOGWRITE"
+}
+
+switch $config.catch2.colour_win32
+{
+  case [null]
+    CATCH_CONFIG_COLOUR_WIN32_STR = ""
+  case true
+    CATCH_CONFIG_COLOUR_WIN32_STR = "#define CATCH_CONFIG_COLOUR_WIN32"
+  case false
+    CATCH_CONFIG_COLOUR_WIN32_STR = "#define CATCH_CONFIG_NO_COLOUR_WIN32"
+}
+
+switch $config.catch2.counter
+{
+  case [null]
+    CATCH_CONFIG_COUNTER_STR = ""
+  case true
+    CATCH_CONFIG_COUNTER_STR = "#define CATCH_CONFIG_COUNTER"
+  case false
+    CATCH_CONFIG_COUNTER_STR = "#define CATCH_CONFIG_NO_COUNTER"
+}
+
+switch $config.catch2.cpp11_to_string
+{
+  case [null]
+    CATCH_CONFIG_CPP11_TO_STRING_STR = ""
+  case true
+    CATCH_CONFIG_CPP11_TO_STRING_STR = "#define CATCH_CONFIG_CPP11_TO_STRING"
+  case false
+    CATCH_CONFIG_CPP11_TO_STRING_STR = "#define CATCH_CONFIG_NO_CPP11_TO_STRING"
+}
+
+switch $config.catch2.cpp17_byte
+{
+  case [null]
+    CATCH_CONFIG_CPP17_BYTE_STR = ""
+  case true
+    CATCH_CONFIG_CPP17_BYTE_STR = "#define CATCH_CONFIG_CPP17_BYTE"
+  case false
+    CATCH_CONFIG_CPP17_BYTE_STR = "#define CATCH_CONFIG_NO_CPP17_BYTE"
+}
+
+switch $config.catch2.cpp17_optional
+{
+  case [null]
+    CATCH_CONFIG_CPP17_OPTIONAL_STR = ""
+  case true
+    CATCH_CONFIG_CPP17_OPTIONAL_STR = "#define CATCH_CONFIG_CPP17_OPTIONAL"
+  case false
+    CATCH_CONFIG_CPP17_OPTIONAL_STR = "#define CATCH_CONFIG_NO_CPP17_OPTIONAL"
+}
+
+switch $config.catch2.cpp17_string_view
+{
+  case [null]
+    CATCH_CONFIG_CPP17_STRING_VIEW_STR = ""
+  case true
+    CATCH_CONFIG_CPP17_STRING_VIEW_STR = "#define CATCH_CONFIG_CPP17_STRING_VIEW"
+  case false
+    CATCH_CONFIG_CPP17_STRING_VIEW_STR = "#define CATCH_CONFIG_NO_CPP17_STRING_VIEW"
+}
+
+switch $config.catch2.cpp17_uncaught_exceptions
+{
+  case [null]
+    CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS_STR = ""
+  case true
+    CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS_STR = "#define CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS"
+  case false
+    CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS_STR = "#define CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS"
+}
+
+switch $config.catch2.cpp17_variant
+{
+  case [null]
+    CATCH_CONFIG_CPP17_VARIANT_STR = ""
+  case true
+    CATCH_CONFIG_CPP17_VARIANT_STR = "#define CATCH_CONFIG_CPP17_VARIANT"
+  case false
+    CATCH_CONFIG_CPP17_VARIANT_STR = "#define CATCH_CONFIG_NO_CPP17_VARIANT"
+}
+
+switch $config.catch2.global_nextafter
+{
+  case [null]
+    CATCH_CONFIG_GLOBAL_NEXTAFTER_STR = ""
+  case true
+    CATCH_CONFIG_GLOBAL_NEXTAFTER_STR = "#define CATCH_CONFIG_GLOBAL_NEXTAFTER"
+  case false
+    CATCH_CONFIG_GLOBAL_NEXTAFTER_STR = "#define CATCH_CONFIG_NO_GLOBAL_NEXTAFTER"
+}
+
+switch $config.catch2.posix_signals
+{
+  case [null]
+    CATCH_CONFIG_POSIX_SIGNALS_STR = ""
+  case true
+    CATCH_CONFIG_POSIX_SIGNALS_STR = "#define CATCH_CONFIG_POSIX_SIGNALS"
+  case false
+    CATCH_CONFIG_POSIX_SIGNALS_STR = "#define CATCH_CONFIG_NO_POSIX_SIGNALS"
+}
+
+switch $config.catch2.use_async
+{
+  case [null]
+    CATCH_CONFIG_USE_ASYNC_STR = ""
+  case true
+    CATCH_CONFIG_USE_ASYNC_STR = "#define CATCH_CONFIG_USE_ASYNC"
+  case false
+    CATCH_CONFIG_USE_ASYNC_STR = "#define CATCH_CONFIG_NO_USE_ASYNC"
+}
+
+switch $config.catch2.wchar
+{
+  case [null]
+    CATCH_CONFIG_WCHAR_STR = ""
+  case true
+    CATCH_CONFIG_WCHAR_STR = "#define CATCH_CONFIG_WCHAR"
+  case false
+    CATCH_CONFIG_WCHAR_STR = "#define CATCH_CONFIG_NO_WCHAR"
+}
+
+
+switch $config.catch2.windows_seh
+{
+  case [null]
+    CATCH_CONFIG_WINDOWS_SEH_STR = ""
+  case true
+    CATCH_CONFIG_WINDOWS_SEH_STR = "#define CATCH_CONFIG_WINDOWS_SEH"
+  case false
+    CATCH_CONFIG_WINDOWS_SEH_STR = "#define CATCH_CONFIG_NO_WINDOWS_SEH"
+}
+
+# Bi-State config strings
+if ($config.catch2.disable_exceptions)
+  CATCH_CONFIG_DISABLE_EXCEPTIONS_STR = "#define CATCH_CONFIG_DISABLE_EXCEPTIONS"
+else
+  CATCH_CONFIG_DISABLE_EXCEPTIONS_STR = ""
+
+
+if ($config.catch2.disable_exceptions_custom_handler)
+  CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER_STR = "#define CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER"
+else
+  CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER_STR = ""
+
+if ($config.catch2.disable)
+  CATCH_CONFIG_DISABLE_STR = "#define CATCH_CONFIG_DISABLE"
+else
+  CATCH_CONFIG_DISABLE_STR = ""
+
+if ($config.catch2.disable_stringification)
+  CATCH_CONFIG_DISABLE_STRINGIFICATION_STR = "#define CATCH_CONFIG_DISABLE_STRINGIFICATION"
+else
+  CATCH_CONFIG_DISABLE_STRINGIFICATION_STR = ""
+
+if ($config.catch2.enable_all_stringmakers)
+  CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS_STR = "#define CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS"
+else
+  CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS_STR = ""
+
+if ($config.catch2.enable_pair_stringmaker)
+  CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER_STR = "#define CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER"
+else
+  CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER_STR = ""
+
+if ($config.catch2.enable_optional_stringmaker)
+  CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER_STR = "#define CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER"
+else
+  CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER_STR = ""
+
+if ($config.catch2.enable_tuple_stringmaker)
+  CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER_STR = "#define CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER"
+else
+  CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER_STR = ""
+
+if ($config.catch2.enable_variant_stringmaker)
+  CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER_STR = "#define CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER"
+else
+  CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER_STR = ""
+
+if ($config.catch2.experimental_redirect)
+  CATCH_CONFIG_EXPERIMENTAL_REDIRECT_STR = "#define CATCH_CONFIG_EXPRIMENTAL_REDIRECT"
+else
+  CATCH_CONFIG_EXPERIMENTAL_REDIRECT_STR = ""
+
+if ($config.catch2.fast_compile)
+  CATCH_CONFIG_FAST_COMPILE_STR = "#define CATCH_CONFIG_FAST_COMPILE"
+else
+  CATCH_CONFIG_FAST_COMPILE_STR = ""
+
+if ($config.catch2.nostdout)
+  CATCH_CONFIG_NOSTDOUT_STR = "#define CATCH_CONFIG_NOSTDOUT"
+else
+  CATCH_CONFIG_NOSTDOUT_STR = ""
+
+if ($config.catch2.prefix_all)
+  CATCH_CONFIG_PREFIX_ALL_STR = "#define CATCH_CONFIG_PREFIX_ALL"
+else
+  CATCH_CONFIG_PREFIX_ALL_STR = ""
+
+
+if ($config.catch2.windows_crtdbg)
+  CATCH_CONFIG_WINDOWS_CRTDBG_STR = "#define CATCH_CONFIG_WINDOWS_CRTDBG"
+else
+  CATCH_CONFIG_WINDOWS_CRTDBG_STR = ""
+
+if ($config.catch2.fallback_stringifier != [null])
+  CATCH_CONFIG_FALLBACK_STRINGIFIER_STR = "#define CATCH_CONFIG_FALLBACK_STRINGIFIER $config.catch2.fallback_stringifier"
+else
+  CATCH_CONFIG_FALLBACK_STRINGIFIER_STR = ""

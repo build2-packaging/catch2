@@ -1,0 +1,8 @@
+: DeferredStaticChecks
+$* -r compact >>~%EOM% != 0
+%(
+%.*%
+%)+?
+Failed 1 test case, failed all 3 assertions.
+
+EOM

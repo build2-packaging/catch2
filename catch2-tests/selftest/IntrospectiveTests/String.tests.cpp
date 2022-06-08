@@ -1,1 +1,0 @@
-../../../upstream/projects/SelfTest/IntrospectiveTests/String.tests.cpp

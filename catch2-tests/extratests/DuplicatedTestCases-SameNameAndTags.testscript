@@ -1,0 +1,7 @@
+: DuplicatedTestCases-SameNameAndTags
+$* 1>- 2>>~%EOM% != 0
+%error.*already defined.*%
+%(
+%.*%
+%)+
+EOM

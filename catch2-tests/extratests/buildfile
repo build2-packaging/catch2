@@ -1,17 +1,25 @@
-import catch2_lib = catch2%lib{catch2}
+import catch2_lib = catch2%liba{catch2wmain}
+import catch2_lib += catch2%liba{catch2}
 
 ./: exe{PrefixedMacros}: cxx{X01-PrefixedMacros} $catch2_lib testscript{PrefixedMacros}
-obj{X01-PrefixedMacros}: cxx.poptions += -DCATCH_CONFIG_PREFIX_ALL 
+obj{X01-PrefixedMacros}: cxx.poptions += -DCATCH_CONFIG_PREFIX_ALL -DCATCH_CONFIG_RUNTIME_STATIC_REQUIRE
 
 ./: exe{DisabledMacros}: cxx{X02-DisabledMacros} $catch2_lib testscript{DisabledMacros}
 obj{X02-DisabledMacros}: cxx.poptions += -DCATCH_CONFIG_DISABLE
 
 ./: exe{DisabledExceptions-DefaultHandler}: cxx{X03-DisabledExceptions-DefaultHandler} $catch2_lib testscript{DisabledExceptions-DefaultHandler}
-./: exe{DisabledExceptions-CustomHandler} : cxx{X04-DisabledExceptions-CustomHandler} $catch2_lib  testscript{DisabledExceptions-CustomHandler}
+
+# Custom handler not implemented yet in 3.0.0
+#./: exe{DisabledExceptions-CustomHandler} : cxx{X04-DisabledExceptions-CustomHandler} $catch2_lib  testscript{DisabledExceptions-CustomHandler}
 if ($cxx.id == 'msvc')
   obj{X??-DisabledExceptions*}:cxx.coptions += \/EHs-c- \/D_HAS_EXCEPTIONS=0 \/GR-
 else
   obj{X??-DisabledExceptions*}: cxx.coptions += -fno-exceptions
+
+#obj{X04-DisabledExceptions-CustomHandler}: cxx.poptions += -DCATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER
+
+./: exe{DeferredStaticChecks}: cxx{X05-DeferredStaticChecks} $catch2_lib testscript{DeferredStaticChecks}
+obj{X05-DeferredStaticChecks}: cxx.poptions += -DCATCH_CONFIG_RUNTIME_STATIC_REQUIRE
 
 ./: exe{FallbackStringifier}: cxx{X10-FallbackStringifier} $catch2_lib  testscript{FallbackStringifier}
 obj{X10-FallbackStringifier}: cxx.poptions += -DCATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier
@@ -19,8 +27,8 @@ obj{X10-FallbackStringifier}: cxx.poptions += -DCATCH_CONFIG_FALLBACK_STRINGIFIE
 ./: exe{DisableStringification}: cxx{X11-DisableStringification} $catch2_lib  testscript{DisableStringification}
 obj{X11-DisableStringification}: cxx.poptions += -DCATCH_CONFIG_DISABLE_STRINGIFICATION
 
-./: exe{BenchmarkingMacros}: cxx{X20-BenchmarkingMacros} $catch2_lib  testscript{BenchmarkingMacros}
-obj{X20-BenchmarkingMacros}: cxx.poptions += -DCATCH_CONFIG_ENABLE_BENCHMARKING
+# ./: exe{BenchmarkingMacros}: cxx{X20-BenchmarkingMacros} $catch2_lib  testscript{BenchmarkingMacros}
+# obj{X20-BenchmarkingMacros}: cxx.poptions += -DCATCH_CONFIG_ENABLE_BENCHMARKING
 
 # MSVC specific test exe. Need to ensure file is always included in distribution
 exe{WindowsHeader}: $catch2_lib cxx{X90-WindowsHeaderInclusion}: include = ($cxx.id == 'msvc')
@@ -32,4 +40,52 @@ if($cxx.id == 'msvc')
 
 ./: exe{WindowsHeader}: include = ($cxx.id == 'msvc')
 
-./: exe{DebugBreakMacros}: cxx{X12-CustomDebugBreakMacro} $catch2_lib testscript{DebugBreakMacros}
+./: exe{BenchmarksInCumulativeReporter}: cxx{X22-BenchmarksInCumulativeReporter} $catch2_lib testscript{BenchmarksInCumulativeReporter}
+
+./: exe{CasingInReporterNames}: cxx{X23-CasingInReporterNames} $catch2_lib testscript{CasingInReporterNames}
+
+# Not updated for this release
+# ./: exe{DebugBreakMacros}: cxx{X12-CustomDebugBreakMacro} $catch2_lib testscript{DebugBreakMacros}
+
+./: exe{CapturedStdOutInTestCaseEvents}: cxx{X27-CapturedStdoutInTestCaseEvents} $catch2_lib testscript{CapturedStdOutInTestCaseEvents}
+
+./: exe{ListenerStdoutCaptureInMultireporter}: cxx{X24-ListenerStdoutCaptureInMultireporter} $catch2_lib testscript{ListenerStdoutCaptureInMultireporter}
+
+./: exe{ListenerCanAskForCapturedStdout}: cxx{X25-ListenerCanAskForCapturedStdout} $catch2_lib testscript{ListenerCanAskForCapturedStdout}
+
+./: exe{ReporterPreferencesForPassingAssertionsIsRespected}: cxx{X26-ReporterPreferencesForPassingAssertionsIsRespected} $catch2_lib testscript{ReporterPreferencesForPassingAssertionsIsRespected}
+
+./: exe{ListenersGetEventsBeforeReporters}: cxx{X28-ListenersGetEventsBeforeReporters} $catch2_lib testscript{ListenersGetEventsBeforeReporters}
+
+./: exe{CustomArgumentsForReporters}: cxx{X29-CustomArgumentsForReporters} $catch2_lib testscript{CustomArgumentsForReporters}
+
+./: exe{DuplicatedTestCases-SameNameAndTags}: cxx{X31-DuplicatedTestCases} $catch2_lib testscript{DuplicatedTestCases-SameNameAndTags}
+
+./: exe{DuplicatedTestCases-SameNameDifferentTags}: cxx{X32-DuplicatedTestCasesDifferentTags} $catch2_lib testscript{DuplicatedTestCases-SameNameDifferentTags}
+
+./: exe{DuplicatedTestCases-DuplicatedTestCaseMethods}: cxx{X33-DuplicatedTestCaseMethods} $catch2_lib testscript{DuplicatedTestCases-DuplicatedTestCaseMethods}
+
+./: exe{DuplicatedTestCases-DifferentFixtures}: cxx{X34-DuplicatedTestCaseMethodsDifferentFixtures} $catch2_lib testscript{DuplicatedTestCases-DifferentFixtures}
+
+./: exe{DuplicatedReporterNames}: cxx{X35-DuplicatedReporterNames} $catch2_lib testscript{DuplicatedReporterNames}
+
+./: exe{NoTests}: cxx{X92-NoTests} $catch2_lib testscript{NoTests}
+
+./: exe{AmalgamatedTestCompilation}: {hxx cxx}{extras/*} cxx{X91-AmalgamatedCatch} testscript{Amulgamated}
+obj{X91-AmalgamatedCatch}: cxx.poptions += "-I$src_base/extras"
+
+# On FreeBSD the auto detection of colour mode is not properly detected on console redirect
+# There are colour codes written out which fails regex match
+if($cxx.target.system == 'freebsd')
+{
+  testnames = PrefixedMacros DisabledMacros DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandler \
+              DeferredStaticChecks FallbackStringifier DisableStringification BenchmarkingMacros BenchmarksInCumulativeReporter \
+              CasingInReporterNames CapturedStdOutInTestCaseEvents ListenerStdoutCaptureInMultireporter \
+              ListenerCanAskForCapturedStdout ReporterPreferencesForPassingAssertionsIsRespected \
+              ListenersGetEventsBeforeReporters CustomArgumentsForReporters \
+              DuplicatedTestCases-SameNameAndTags DuplicatedTestCases-SameNameDifferentTags \
+              DuplicatedTestCases-DuplicatedTestCaseMethods DuplicatedTestCases-DifferentFixtures \
+              DuplicatedReporterNames NoTests AmalgamatedTestCompilation
+  for n: $testnames
+    exe{$n}: test.options =+ --colour-mode none 
+}

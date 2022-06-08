@@ -1,0 +1,6 @@
+: DuplicatedTestCases-SameNameDifferentTags
+$* >>~%EOM%
+%(
+%((?!error).*)%
+%)+?
+EOM

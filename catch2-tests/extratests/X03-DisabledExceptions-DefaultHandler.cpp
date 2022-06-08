@@ -1,1 +1,1 @@
-../../upstream/projects/ExtraTests/X03-DisabledExceptions-DefaultHandler.cpp
+../../upstream/tests/ExtraTests/X03-DisabledExceptions-DefaultHandler.cpp

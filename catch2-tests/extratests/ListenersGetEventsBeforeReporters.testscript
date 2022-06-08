@@ -1,0 +1,8 @@
+: ListenersGetEventsBeforeReporters
+$* --reporter test-reporter >>~%EOM%
+%(
+%((?!X28 - ERROR).*)%
+%)+?
+%X28 - TestReporter constructed%
+EOM
+

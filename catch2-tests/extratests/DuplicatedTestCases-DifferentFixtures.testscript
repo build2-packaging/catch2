@@ -1,0 +1,6 @@
+: DuplicatedTestCases-DifferentFixtures
+$* >>~%EOM%
+%(
+%((?!error).*)%
+%)+?
+EOM

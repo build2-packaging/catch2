@@ -1,0 +1,10 @@
+: MultiReporter
+{
+  nulfile = ($cxx.target.class == 'windows' ? nul : /dev/null)
+
+  : NoncapturingListenerDoesntCauseStdoutPassThrough
+  $* --reporter "xml::out=$nulfile" --reporter "junit::out=$nulfile" >>EOM 2>&1
+  X24 - NonCapturingListener initialized.
+  EOM
+
+}
