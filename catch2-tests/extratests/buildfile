@@ -76,7 +76,7 @@ obj{X91-AmalgamatedCatch}: cxx.poptions += "-I$src_base/extras"
 
 # On FreeBSD the auto detection of colour mode is not properly detected on console redirect
 # There are colour codes written out which fails regex match
-if($cxx.target.class == 'freebsd')
+if($cxx.target.system == 'freebsd')
 {
   testnames = PrefixedMacros DisabledMacros DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandler \
               DeferredStaticChecks FallbackStringifier DisableStringification BenchmarkingMacros BenchmarksInCumulativeReporter \

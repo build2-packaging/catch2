@@ -12,5 +12,5 @@ if ($cxx.id == 'msvc')
 
 # On FreeBSD the auto detection of colour mode is not properly detected on console redirect
 # There are colour codes written out which fails regex match
-if($cxx.target.class == 'freebsd')
+if($cxx.target.system == 'freebsd')
   exe{selftest}: test.options =+ --colour-mode none
