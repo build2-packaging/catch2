@@ -1,6 +1,4 @@
-# C++14 required as the latest c++ version.
-# C++17 deprecates and C++20 removes some std types
-cxx.std = 14
+cxx.std = latest
 using cxx
 
 hxx{*}: extension = hpp
