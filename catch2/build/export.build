@@ -3,7 +3,4 @@ $out_root/
   include src/
 }
 
-if (!($import.target == liba{catch2} || $import.target == liba{catch2wmain}))
-  fail "Catch2 currently supports static lib with this release"
-
 export $out_root/src/$import.target
