@@ -2,9 +2,18 @@
 # Create user configuration file
 hxx{catch2/catch_user_config}: in{catch2/catch_user_config.hpp.in}
 
-lib{catch2}: {hxx cxx}{** -catch2/internal/catch_main} hxx{catch2/catch_user_config}
-lib{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2}
+# Support for DLLs on windows - Auto export all symbols
+lib{catch2}: libul{catch2}: {hxx cxx}{** -catch2/internal/catch_main} hxx{catch2/catch_user_config}
+lib{catch2}: def{catch2}: include = ($cxx.target.system == 'win32-msvc')
+def{catch2}: libul{catch2}
 
+# Is this really needed for main function?
+lib{catch2wmain}: libul{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2}
+lib{catch2wmain}: def{catch2wmain}: include = ($cxx.target.system == 'win32-msvc')
+def{catch2wmain}: libul{catch2wmain}
+
+if($cxx.target.system == 'mingw32')
+  cxx.loptions += -Wl,--export-all-symbols
 
 # Build options.
 out_pfx_src = [dir_path] $out_root/src/
