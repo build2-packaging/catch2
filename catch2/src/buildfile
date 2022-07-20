@@ -2,9 +2,8 @@
 # Create user configuration file
 hxx{catch2/catch_user_config}: in{catch2/catch_user_config.hpp.in}
 
-# Upstream currently doesn't support shared libs
-liba{catch2}: {hxx cxx}{** -catch2/internal/catch_main} hxx{catch2/catch_user_config}
-liba{catch2wmain}: catch2/internal/cxx{catch_main} liba{catch2}
+lib{catch2}: {hxx cxx}{** -catch2/internal/catch_main} hxx{catch2/catch_user_config}
+lib{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2}
 
 
 # Build options.
@@ -14,10 +13,10 @@ src_pfx_src = [dir_path] $src_root/src/
 cxx.poptions =+ "-I$src_pfx_src" "-I$out_pfx_src"
 
 cxx.export.poptions += "-I$src_pfx_src" "-I$out_pfx_src" 
-liba{catch2wmain}: cxx.export.poptions += -DCATCH2_BUILD_STATIC_WITH_MAIN
-liba{catch2wmain}: bin.whole = true
+lib{catch2wmain}: cxx.export.poptions += -DCATCH2_BUILD_STATIC_WITH_MAIN
+lib{catch2wmain}: bin.whole = true
 
-./: liba{catch2} liba{catch2wmain}
+./: lib{catch2} lib{catch2wmain}
 
 hxx{*}:
 {

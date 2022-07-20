@@ -1,5 +1,5 @@
-import catch2_lib = catch2%liba{catch2wmain}
-import catch2_lib += catch2%liba{catch2}
+import catch2_lib = catch2%lib{catch2wmain}
+import catch2_lib += catch2%lib{catch2}
 
 single_file_srcs    = 010-TestCase \
 

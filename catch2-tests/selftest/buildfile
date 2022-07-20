@@ -1,5 +1,5 @@
-import intf_libs = catch2%liba{catch2}
-import intf_libs =+ catch2%liba{catch2wmain}
+import intf_libs = catch2%lib{catch2}
+import intf_libs =+ catch2%lib{catch2wmain}
 
 
 ./: exe{selftest}: {hxx cxx}{**} $intf_libs testscript Misc/file{*.input}
