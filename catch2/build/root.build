@@ -10,6 +10,9 @@ cxx{*}: extension = cpp
 #
 test.target = $cxx.target
 
+if($cxx.target.system == 'win32-msvc' && $bin.lib != static)
+  warn "Catch2's support for building and linking as dlls with msvc is not complete with this release. See https://github.com/catchorg/Catch2/issues/2482#issue-1313643759"
+
 # Configuration variables
 
 config [bool] config.catch2.android_logwrite ?= [null]

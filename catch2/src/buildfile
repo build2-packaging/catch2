@@ -12,18 +12,30 @@ lib{catch2wmain}: libul{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2
 lib{catch2wmain}: def{catch2wmain}: include = ($cxx.target.system == 'win32-msvc')
 def{catch2wmain}: libul{catch2wmain}
 
-if($cxx.target.system == 'mingw32')
-  cxx.loptions += -Wl,--export-all-symbols
 
 # Build options.
 out_pfx_src = [dir_path] $out_root/src/
 src_pfx_src = [dir_path] $src_root/src/
-
 cxx.poptions =+ "-I$src_pfx_src" "-I$out_pfx_src"
-
 cxx.export.poptions += "-I$src_pfx_src" "-I$out_pfx_src" 
-lib{catch2wmain}: cxx.export.poptions += -DCATCH2_BUILD_STATIC_WITH_MAIN
-lib{catch2wmain}: bin.whole = true
+
+if($cxx.target.system == 'mingw32')
+  cxx.loptions += -Wl,--export-all-symbols
+
+obja{*}: cxx.poptions += -DCATCH_STATIC_BUILD
+objs{*}: cxx.poptions += -DCATCH_SHARED_BUILD
+
+libs{catch2}: cxx.export.poptions += -DCATCH_SHARED
+liba{catch2}: cxx.export.poptions += -DCATCH_STATIC
+
+if($cxx.target.system == 'win32-msvc')
+  lib{catch2wmain}: cxx.export.loptions += "/INCLUDE:main"
+
+liba{catch2wmain}:
+{
+  cxx.export.poptions += -DCATCH2_BUILD_STATIC_WITH_MAIN
+  bin.whole = true
+}
 
 ./: lib{catch2} lib{catch2wmain}
 

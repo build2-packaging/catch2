@@ -5,4 +5,7 @@
 
   : OverrideFailureWithEmptySpec
   $* --allow-running-no-tests >- 2>&1
+
+  : WorksWithoutRegisteredListeners
+  $* --list-listeners >-
 }
