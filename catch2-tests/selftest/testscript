@@ -211,7 +211,7 @@ EOM
   EOM
 
   : GeneratorsDontCauseInfiniteLoop-2
-  $* "#2025: same-level sections" -c "A" -c "B" --colour-mode "none" >>~%EOM%
+  $* "#2025: same-level sections" -c "A" -c "B" >>~%EOM%
   %(
   %.*%
   %)+
@@ -326,7 +326,7 @@ EOM
 : Benchmarking
 {
   :SkipBenchmarkMacros
-  $* "Skip benchmark macros" --reporter console --skip-benchmarks --colour-mode "none" >>~%EOM%
+  $* "Skip benchmark macros" --reporter console --skip-benchmarks >>~%EOM%
   %(
   %.*%
   %)+
@@ -408,7 +408,7 @@ EOM
 : Outputs
 {
   : DashAsOutLocationSendsOutputToStdout
-  $* "Factorials are computed" --out=- --colour-mode "none" >>~%EOM%
+  $* "Factorials are computed" --out=- >>~%EOM%
   %(
   %.*%
   %)+
@@ -420,7 +420,7 @@ EOM
 : Reporters
 {
   : DashAsLocationInReportersSpecSendsOutputToStdout
-  $* "Factorials are computed" --reporter "console::out=-" --colour-mode "none" >>~%EOM%
+  $* "Factorials are computed" --reporter "console::out=-" >>~%EOM%
   %(
   %.*%
   %)+
