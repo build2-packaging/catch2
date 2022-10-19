@@ -39,6 +39,16 @@ liba{catch2wmain}:
 
 ./: lib{catch2} lib{catch2wmain}
 
+
+# For pre-releases use the complete version to make sure they cannot be used
+# in place of another pre-release or the final version. See the version module
+# for details on the version.* variable values.
+#
+if $version.pre_release
+  lib{catch2*}: bin.lib.version = "-$version.project_id"
+else
+  lib{catch2*}: bin.lib.version = "-$version.major.$version.minor"
+
 hxx{*}:
 {
   install = include/
