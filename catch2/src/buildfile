@@ -22,11 +22,11 @@ cxx.export.poptions += "-I$src_pfx_src" "-I$out_pfx_src"
 if($cxx.target.system == 'mingw32')
   cxx.loptions += -Wl,--export-all-symbols
 
-obja{*}: cxx.poptions += -DCATCH_STATIC_BUILD
-objs{*}: cxx.poptions += -DCATCH_SHARED_BUILD
+obja{*}: cxx.poptions += -DCATCH_CONFIG_STATIC
+objs{*}: cxx.poptions += -DCATCH_CONFIG_SHARED_LIBRARY -DCatch2_EXPORTS
 
-libs{catch2}: cxx.export.poptions += -DCATCH_SHARED
-liba{catch2}: cxx.export.poptions += -DCATCH_STATIC
+libs{catch2}: cxx.export.poptions += -DCATCH_CONFIG_SHARED_LIBRARY
+liba{catch2}: cxx.export.poptions += -DCATCH_CONFIG_STATIC
 
 if($cxx.target.system == 'win32-msvc')
   lib{catch2wmain}: cxx.export.loptions += "/INCLUDE:main"
