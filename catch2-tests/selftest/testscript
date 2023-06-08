@@ -139,7 +139,7 @@ EOM
   %(
   %.*%
   %)+
-  %No test cases matched '___nonexistent_test___'%
+  %No test cases matched '"___nonexistent_test___"'%
   %(
   %.*%
   %)+
@@ -155,6 +155,19 @@ EOM
   : WarnUnmatchedTestSpecFailsWithUnmatchedTestSpec
   $* Tracker, "___nonexistent_test___" --warn UnmatchedTestSpec >- != 0
 
+  : OverrideAllSkipFailure
+  $* "tests can be skipped dynamically at run time" --allow-running-no-tests >-
+
+  : NonMatchingTestSpecIsRoundTrippable
+  $* "this test does not exist" "[nor does this tag]" >>~%EOM% != 0
+  %(
+  %.*%
+  %)+
+  %No test cases matched '"this test does not exist" \[nor does this tag\]'%
+  %(
+  %.*%
+  %)+
+  EOM
   
 } 
 
@@ -225,14 +238,15 @@ $* "#1670 regression check" -c A -r compact >>~%EOM%
 %(
 %.*%
 %)+
-Passed 1 test case with 2 assertions.
+All tests passed (2 assertions in 1 test case)
+
 
 EOM
 
 : VersionCheck
 $* -h >>~%EOM%
 
-%Catch2 v3\.1\.1%
+%Catch2 v3\.3\.2%
 %(
 %.*%
 %)*?
@@ -461,6 +475,66 @@ EOM
    EOM
  }
 
+ : Filters
+ {
+   : console
+   $* [comparisons][string-case] "CaseInsensitiveLess is case insensitive" --reporter console >>~%EOM%
+   %Filters.+\[comparisons\] \[string-case\] "CaseInsensitiveLess is case insensitive"%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : compact
+   $* [comparisons][string-case] "CaseInsensitiveLess is case insensitive" --reporter compact >>~%EOM%
+   %Filters.+\[comparisons\] \[string-case\] "CaseInsensitiveLess is case insensitive"%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : JUnit
+   $* [comparisons][string-case] "CaseInsensitiveLess is case insensitive" --reporter JUnit >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*filters.+\[comparisons\] \[string-case\] &quot;CaseInsensitiveLess is case insensitive&quot;.*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : SonarQube
+   $* [comparisons][string-case] "CaseInsensitiveLess is case insensitive" --reporter SonarQube >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*filters.+\[comparisons\] \[string-case\] "CaseInsensitiveLess is case insensitive".*%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : TAP
+   $* [comparisons][string-case] "CaseInsensitiveLess is case insensitive" --reporter TAP >>~%EOM%
+   %.*filters.+\[comparisons\] \[string-case\] "CaseInsensitiveLess is case insensitive"%
+   %(
+   %.*%
+   %)+
+   EOM
+
+   : XML
+   $* [comparisons][string-case] "CaseInsensitiveLess is case insensitive" --reporter XML >>~%EOM%
+   %(
+   %.*%
+   %)+
+   %.*filters.+\[comparisons\] \[string-case\] &quot;CaseInsensitiveLess is case insensitive&quot;.*%
+   %(
+   %.*%
+   %)+
+   EOM
+ }
+
  : RngSeed
  {
    : console
@@ -509,6 +583,9 @@ EOM
 
    : TAP
    $* "Factorials are computed" --reporter "TAP" --rng-seed 18181818 >>~%EOM%
+   %(
+   %.*%
+   %)+
    %.*18181818.*%
    %(
    %.*%

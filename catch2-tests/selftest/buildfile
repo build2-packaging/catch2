@@ -3,7 +3,8 @@ import intf_libs =+ catch2%lib{catch2wmain}
 
 
 ./: exe{selftest}: {hxx cxx}{**} $intf_libs testscript Misc/file{*.input}
-cxx.poptions += "-I$src_base/include"
+# cxx.poptions += "-I$src_base/include"
+cxx.poptions += "-I$src_base"
 
 # Need to ensure MSVC uses all strings as utf-8
 # Required for "Broken String test"

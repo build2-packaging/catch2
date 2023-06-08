@@ -74,6 +74,8 @@ if($cxx.id == 'msvc')
 ./: exe{AmalgamatedTestCompilation}: {hxx cxx}{extras/*} cxx{X91-AmalgamatedCatch} testscript{Amulgamated}
 obj{X91-AmalgamatedCatch}: cxx.poptions += "-I$src_base/extras"
 
+./: exe{AllSkipped}: cxx{X93-AllSkipped} $catch2_lib
+
 # On FreeBSD the auto detection of colour mode is not properly detected on console redirect
 # There are colour codes written out which fails regex match
 if($cxx.target.system == 'freebsd')

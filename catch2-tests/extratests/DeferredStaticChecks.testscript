@@ -2,7 +2,9 @@
 $* -r compact >>~%EOM% != 0
 %(
 %.*%
-%)+?
-Failed 1 test case, failed all 3 assertions.
+%)+
+test cases: 1 | 1 failed
+assertions: 3 | 3 failed
+
 
 EOM
