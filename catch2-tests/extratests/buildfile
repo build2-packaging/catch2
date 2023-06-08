@@ -1,4 +1,4 @@
-import catch2_lib = catch2%lib{catch2wmain}
+import catch2_lib = catch2%liba{catch2wmain}
 import catch2_lib += catch2%lib{catch2}
 
 ./: exe{PrefixedMacros}: cxx{X01-PrefixedMacros} $catch2_lib testscript{PrefixedMacros}
