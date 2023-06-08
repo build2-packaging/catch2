@@ -8,9 +8,10 @@ lib{catch2}: def{catch2}: include = ($cxx.target.system == 'win32-msvc')
 def{catch2}: libul{catch2}
 
 # Is this really needed for main function?
-lib{catch2wmain}: libul{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2}
-lib{catch2wmain}: def{catch2wmain}: include = ($cxx.target.system == 'win32-msvc')
-def{catch2wmain}: libul{catch2wmain}
+# lib{catch2wmain}: libul{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2}
+# lib{catch2wmain}: def{catch2wmain}: include = ($cxx.target.system == 'win32-msvc')
+# def{catch2wmain}: libul{catch2wmain}
+liba{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2}
 
 
 # Build options.
@@ -28,8 +29,11 @@ objs{*}: cxx.poptions += -DCATCH_CONFIG_SHARED_LIBRARY -DCatch2_EXPORTS
 libs{catch2}: cxx.export.poptions += -DCATCH_CONFIG_SHARED_LIBRARY
 liba{catch2}: cxx.export.poptions += -DCATCH_CONFIG_STATIC
 
-if($cxx.target.system == 'win32-msvc')
-  lib{catch2wmain}: cxx.export.loptions += "/INCLUDE:main"
+# if($cxx.target.system == 'win32-msvc')
+# {
+#   lib{catch2wmain}: cxx.export.loptions += "/INCLUDE:main"
+#   lib{catch2wmain}: cxx.pkgconfig.lib += "/INCLUDE:main"
+# }
 
 liba{catch2wmain}:
 {
@@ -37,7 +41,7 @@ liba{catch2wmain}:
   bin.whole = true
 }
 
-./: lib{catch2} lib{catch2wmain}
+./: lib{catch2} liba{catch2wmain}
 
 
 # For pre-releases use the complete version to make sure they cannot be used
