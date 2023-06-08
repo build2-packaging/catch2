@@ -29,4 +29,5 @@ catch2-tests/selftest/IntrospectiveTests symlink=dir
 catch2-tests/selftest/Misc               symlink=dir
 catch2-tests/selftest/TimingTests        symlink=dir
 catch2-tests/selftest/UsageTests         symlink=dir
+catch2-tests/selftest/helpers            symlink=dir
 catch2-tests/extratests/extras           symlink=dir
