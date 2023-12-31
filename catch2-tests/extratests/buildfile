@@ -27,8 +27,8 @@ obj{X10-FallbackStringifier}: cxx.poptions += -DCATCH_CONFIG_FALLBACK_STRINGIFIE
 ./: exe{DisableStringification}: cxx{X11-DisableStringification} $catch2_lib  testscript{DisableStringification}
 obj{X11-DisableStringification}: cxx.poptions += -DCATCH_CONFIG_DISABLE_STRINGIFICATION
 
-# ./: exe{BenchmarkingMacros}: cxx{X20-BenchmarkingMacros} $catch2_lib  testscript{BenchmarkingMacros}
-# obj{X20-BenchmarkingMacros}: cxx.poptions += -DCATCH_CONFIG_ENABLE_BENCHMARKING
+./: exe{AssertionStartingEventGoesBeforeAssertionIsEvaluated}: cxx{X20-AssertionStartingEventGoesBeforeAssertionIsEvaluated} $catch2_lib  testscript{AssertionStartingEventGoesBeforeAssertionIsEvaluated}
+#obj{X20-BenchmarkingMacros}: cxx.poptions += -DCATCH_CONFIG_ENABLE_BENCHMARKING
 
 # MSVC specific test exe. Need to ensure file is always included in distribution
 exe{WindowsHeader}: $catch2_lib cxx{X90-WindowsHeaderInclusion}: include = ($cxx.id == 'msvc')
