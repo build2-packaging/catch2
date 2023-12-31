@@ -25,3 +25,4 @@ DuplicatedReporterNames
 ListenerCanAskForCapturedStdout
 ListenersGetEventsBeforeReporters
 AllSkipped
+AssertionStartingEventGoesBeforeAssertionIsEvaluated
