@@ -18,6 +18,10 @@ liba{catch2wmain}: catch2/internal/cxx{catch_main} lib{catch2}
 out_pfx_src = [dir_path] $out_root/src/
 src_pfx_src = [dir_path] $src_root/src/
 cxx.poptions =+ "-I$src_pfx_src" "-I$out_pfx_src"
+if($config.catch2.reproducible_build == true && ($cxx.target.class == "gcc" || $cxx.target.class == "clang"))
+{
+  cxx.coptions += "-ffile-prefix-map=$src_root/="
+}
 cxx.export.poptions += "-I$src_pfx_src" "-I$out_pfx_src" 
 
 if($cxx.target.system == 'mingw32')

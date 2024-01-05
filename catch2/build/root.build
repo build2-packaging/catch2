@@ -29,6 +29,7 @@ config [bool] config.catch2.posix_signals ?= [null]
 config [bool] config.catch2.use_async ?= [null]
 config [bool] config.catch2.wchar ?= [null]
 config [bool] config.catch2.windows_seh ?= [null]
+config [bool] config.catch2.reproducible_build ?= [null]
 
 
 # Bi state config variables
