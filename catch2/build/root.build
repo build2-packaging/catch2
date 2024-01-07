@@ -29,7 +29,6 @@ config [bool] config.catch2.posix_signals ?= [null]
 config [bool] config.catch2.use_async ?= [null]
 config [bool] config.catch2.wchar ?= [null]
 config [bool] config.catch2.windows_seh ?= [null]
-config [bool] config.catch2.reproducible_build ?= [null]
 
 
 # Bi state config variables
@@ -47,6 +46,8 @@ config [bool] config.catch2.fast_compile ?= false
 config [bool] config.catch2.nostdout ?= false
 config [bool] config.catch2.prefix_all ?= false
 config [bool] config.catch2.windows_crtdbg ?= false
+config [bool] config.catch2.reproducible_build ?= true
+config [bool] config.catch2.prefix_messages ?= false
 
 # Valued configurations
 config [string] config.catch2.default_reporter ?= "console"
@@ -271,3 +272,9 @@ if ($config.catch2.fallback_stringifier != [null])
   CATCH_CONFIG_FALLBACK_STRINGIFIER_STR = "#define CATCH_CONFIG_FALLBACK_STRINGIFIER $config.catch2.fallback_stringifier"
 else
   CATCH_CONFIG_FALLBACK_STRINGIFIER_STR = ""
+
+if ($config.catch2.prefix_messages)
+  CATCH_CONFIG_PREFIX_MESSAGES_STR = "#define CATCH_CONFIG_PREFIX_MESSAGES"
+else
+  CATCH_CONFIG_PREFIX_MESSAGES_STR = ""
+
