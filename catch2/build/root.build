@@ -26,6 +26,7 @@ config [bool] config.catch2.cpp17_uncaught_exceptions ?= [null]
 config [bool] config.catch2.cpp17_variant ?= [null]
 config [bool] config.catch2.global_nextafter ?= [null]
 config [bool] config.catch2.posix_signals ?= [null]
+config [bool] config.catch2.getenv ?= [null]
 config [bool] config.catch2.use_async ?= [null]
 config [bool] config.catch2.wchar ?= [null]
 config [bool] config.catch2.windows_seh ?= [null]
@@ -162,6 +163,16 @@ switch $config.catch2.posix_signals
     CATCH_CONFIG_POSIX_SIGNALS_STR = "#define CATCH_CONFIG_POSIX_SIGNALS"
   case false
     CATCH_CONFIG_POSIX_SIGNALS_STR = "#define CATCH_CONFIG_NO_POSIX_SIGNALS"
+}
+
+switch $config.catch2.getenv
+{
+  case [null]
+    CATCH_CONFIG_GETENV_STR = ""
+  case true
+    CATCH_CONFIG_GETENV_STR = "#define CATCH_CONFIG_GETENV"
+  case false
+    CATCH_CONFIG_GETENV_STR = "#define CATCH_CONFIG_NO_GETENV"
 }
 
 switch $config.catch2.use_async
