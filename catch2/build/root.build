@@ -47,7 +47,6 @@ config [bool] config.catch2.fast_compile ?= false
 config [bool] config.catch2.nostdout ?= false
 config [bool] config.catch2.prefix_all ?= false
 config [bool] config.catch2.windows_crtdbg ?= false
-config [bool] config.catch2.reproducible_build ?= true
 config [bool] config.catch2.prefix_messages ?= false
 
 # Valued configurations
