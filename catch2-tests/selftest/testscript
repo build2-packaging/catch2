@@ -246,7 +246,7 @@ EOM
 : VersionCheck
 $* -h >>~%EOM%
 
-%Catch2 v3\.5\.1%
+%Catch2 v3\.7\.1%
 %(
 %.*%
 %)*?

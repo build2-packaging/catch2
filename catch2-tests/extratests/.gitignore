@@ -26,3 +26,4 @@ ListenerCanAskForCapturedStdout
 ListenersGetEventsBeforeReporters
 AllSkipped
 AssertionStartingEventGoesBeforeAssertionIsEvaluated
+ReportingCrashWithJunitReporter

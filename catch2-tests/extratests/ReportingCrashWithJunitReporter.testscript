@@ -1,0 +1,9 @@
+: Reporters
+{
+  : CrashInJunitReporter
+  $* --reporter JUnit >>%EOM% != 0
+  %(
+  %.*%
+  %)*?
+  %EOM%
+}

@@ -69,6 +69,10 @@ if($cxx.id == 'msvc')
 
 ./: exe{DuplicatedReporterNames}: cxx{X35-DuplicatedReporterNames} $catch2_lib testscript{DuplicatedReporterNames}
 
+# This test is intended to crash with an illegal instruction
+# Testscripts cannot handle this situation
+# ./: exe{ReportingCrashWithJunitReporter}: cxx{X36-ReportingCrashWithJunitReporter} $catch2_lib testscript{ReportingCrashWithJunitReporter}
+
 ./: exe{NoTests}: cxx{X92-NoTests} $catch2_lib testscript{NoTests}
 
 ./: exe{AmalgamatedTestCompilation}: {hxx cxx}{extras/*} cxx{X91-AmalgamatedCatch} testscript{Amulgamated}

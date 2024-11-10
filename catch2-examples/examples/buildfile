@@ -1,5 +1,6 @@
 import catch2_lib = catch2%liba{catch2wmain}
-import catch2_lib += catch2%lib{catch2}
+import catch2_lib_wo_main = catch2%lib{catch2}
+catch2_lib += $catch2_lib_wo_main
 
 single_file_srcs    = 010-TestCase \
 
@@ -9,12 +10,11 @@ single_file_srcs    = 010-TestCase \
 
 srcs_020            = 020-TestCase-1 \
                       020-TestCase-2
-                      
-src_idomatic_main   = 000-CatchMain
 
 src_idomatic_tests  = 030-Asn-Require-Check \
                       100-Fix-Section \
                       110-Fix-ClassFixture \
+                      111-Fix-PersistentFixture \
                       120-Bdd-ScenarioGivenWhenThen \
                       210-Evt-EventListeners \
                       300-Gen-OwnGenerator \
@@ -22,6 +22,8 @@ src_idomatic_tests  = 030-Asn-Require-Check \
                       302-Gen-Table \
                       310-Gen-VariablesInGenerators \
                       311-Gen-CustomCapture
+
+srcs_idomatic_main =   232-Cfg-CustomMain
 
 srcs_reporters_main = 200-Rpt-CatchMain \
                       207-Rpt-TeamCityReporter
@@ -40,3 +42,8 @@ for src : $src_idomatic_tests
 }
 
 ./: exe{020-TestCase}: cxx{$srcs_020} $catch2_lib
+
+for src : $srcs_idomatic_main
+{
+  ./: exe{$src}: cxx{$src} $catch2_lib_wo_main 
+}

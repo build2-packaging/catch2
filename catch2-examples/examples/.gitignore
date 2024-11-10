@@ -5,9 +5,11 @@
 231-Cfg-OutputStreams
 030-Asn-Require-Check
 100-Fix-Section
+111-Fix-PersistentFixture
 110-Fix-ClassFixture
 120-Bdd-ScenarioGivenWhenThen
 210-Evt-EventListeners
+232-Cfg-CustomMain
 300-Gen-OwnGenerator
 301-Gen-MapTypeConversion
 302-Gen-Table
