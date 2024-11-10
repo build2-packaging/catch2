@@ -1,0 +1,6 @@
+: 1
+name: catch2-examples
+version: 3.7.1
+project: catch2
+summary: Catch2 Examples
+license: BSL-1.0
